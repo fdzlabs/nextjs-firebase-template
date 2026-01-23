@@ -1,0 +1,13 @@
+project_id   = "my-new-firebase-project-id" # e.g. "acme-corp-web", "my-portfolio-v2"
+project_name = "My Firebase Project"        # e.g. "Acme Corp Web", "My Personal Portfolio"
+region       = "us-central1"
+billing_account = "000000-000000-000000"    # Your Google Cloud Billing Account ID
+# org_id        = "1234567890"              # Optional: Your Organization ID
+
+# google_client_id     = "Please get from Google Cloud Console > APIs & Services > Credentials"
+# google_client_secret = "Please get from Google Cloud Console > APIs & Services > Credentials"
+
+# authorized_domains = [
+#   "auth.example.com",
+#   "app.example.com"
+# ]
