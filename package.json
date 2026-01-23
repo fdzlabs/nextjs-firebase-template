@@ -1,6 +1,6 @@
 {
   "name": "nextjs-firebase-template",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "",
   "private": true,
   "main": "index.js",
@@ -16,8 +16,8 @@
     "start": "next start"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Alexander Fernandez",
+  "license": "MIT",
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
     "@radix-ui/react-accordion": "1.2.2",

@@ -22,3 +22,7 @@ output "firebase_messaging_sender_id" {
 output "firebase_app_id" {
   value = google_firebase_web_app.default.app_id
 }
+
+output "vercel_project_name" {
+  value = length(vercel_project.default) > 0 ? vercel_project.default[0].name : "N/A"
+}

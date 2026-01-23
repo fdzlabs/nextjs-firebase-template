@@ -50,3 +50,30 @@ variable "authorized_domains" {
   type        = list(string)
   default     = []
 }
+
+# Vercel Configuration
+
+variable "deploy_vercel" {
+  description = "Whether to deploy the Vercel project"
+  type        = bool
+  default     = true
+}
+
+variable "vercel_api_token" {
+  description = "The Vercel API Token"
+  type        = string
+  sensitive   = true
+  default     = ""
+}
+
+variable "vercel_org_id" {
+  description = "The Vercel Organization ID (optional). Leave empty for personal account."
+  type        = string
+  default     = ""
+}
+
+variable "vercel_project_name" {
+  description = "The Vercel Project Name (defaults to project_name)"
+  type        = string
+  default     = ""
+}

@@ -83,7 +83,28 @@ google_client_secret = "YOUR_CLIENT_SECRET"
 
 If these are omitted, Google Sign-In will simply be disabled.
 
+
+### Optional: Vercel Deployment
+
+You can optionally provision a Vercel project for your frontend directly via Terraform.
+
+1.  **Get a Vercel API Token**:
+    *   Go to [Vercel Account Tokens](https://vercel.com/account/tokens).
+    *   Create a new token with appropriate scope (e.g. "Full Access" or specific to your needs).
+2.  **Configure `terraform.tfvars`**:
+    *   Set `deploy_vercel = true` (default).
+    *   Set `vercel_api_token` to your token.
+    *   (Optional) Set `vercel_org_id` if deploying to a Vercel Team.
+
+```hcl
+deploy_vercel    = true
+vercel_api_token = "your-vercel-api-token"
+```
+
+If you do **not** want to deploy to Vercel, set `deploy_vercel = false` in your `terraform.tfvars`.
+
 ### Optional: Authorized Domains
+
 
 To allow authentication from custom domains (e.g. `auth.example.com`), add them to `terraform.tfvars`:
 

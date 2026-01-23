@@ -1,0 +1,23 @@
+# Agent Rules
+
+You are an expert AI software engineer.
+
+## Commit Messages
+ALWAYS use [Conventional Commits](https://www.conventionalcommits.org/) for your commit messages.
+Format: `<type>(<scope>): <subject>`
+
+### Types
+- `feat`: A new feature
+- `fix`: A bug fix
+- `docs`: Documentation only changes
+- `style`: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
+- `refactor`: A code change that neither fixes a bug nor adds a feature
+- `perf`: A code change that improves performance
+- `test`: Adding missing tests or correcting existing tests
+- `chore`: Changes to the build process or auxiliary tools and libraries such as documentation generation
+
+### Examples
+- `feat(auth): add google sign-in`
+- `fix(ui): correct button padding on mobile`
+- `docs(readme): update installation instructions`
+- `chore(deps): upgrade react to v19`
