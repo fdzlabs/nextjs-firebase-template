@@ -88,7 +88,12 @@ If these are omitted, Google Sign-In will simply be disabled.
 
 You can optionally provision a Vercel project for your frontend directly via Terraform.
 
-1.  **Get a Vercel API Token**:
+1.  **Prerequisites (Git Integration)**:
+    *   **Install App**: You MUST install the [Official Vercel GitHub App](https://github.com/marketplace/vercel) for Terraform to automatically link your repo.
+    *   **Permissions**: Ensure the helper script is executable: `chmod +x infra/get_git_repo.sh`.
+    *   *See [Vercel Integration Guide](./vercel-integration.md) for full details.*
+
+2.  **Get a Vercel API Token**:
     *   Go to [Vercel Account Tokens](https://vercel.com/account/tokens).
     *   Create a new token with appropriate scope (e.g. "Full Access" or specific to your needs).
 2.  **Configure `terraform.tfvars`**:

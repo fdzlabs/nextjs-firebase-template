@@ -77,3 +77,15 @@ variable "vercel_project_name" {
   type        = string
   default     = ""
 }
+
+variable "vercel_git_repo" {
+  description = "The Git repository to connect to Vercel (e.g. 'user/repo'). Overrides dynamic detection if set."
+  type        = string
+  default     = ""
+}
+
+variable "vercel_git_type" {
+  description = "The Git provider type (github, gitlab, bitbucket). Defaults to 'github' or detected type."
+  type        = string
+  default     = ""
+}

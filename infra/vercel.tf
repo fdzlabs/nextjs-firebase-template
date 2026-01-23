@@ -1,8 +1,17 @@
+data "external" "git_repo" {
+  program = ["bash", "${path.module}/get_git_repo.sh"]
+}
+
 resource "vercel_project" "default" {
   count     = var.deploy_vercel ? 1 : 0
   name      = var.vercel_project_name != "" ? var.vercel_project_name : replace(lower(var.project_name), " ", "-")
   framework = "nextjs"
   team_id   = var.vercel_org_id != "" ? var.vercel_org_id : null
+
+  git_repository = {
+    type = coalesce(var.vercel_git_type, data.external.git_repo.result["type"], "github")
+    repo = coalesce(var.vercel_git_repo, data.external.git_repo.result["repo"])
+  }
 
   environment = [
     {
