@@ -13,6 +13,9 @@ resource "vercel_project" "default" {
     repo = coalesce(var.vercel_git_repo, data.external.git_repo.result["repo"])
   }
 
+  # Ignore builds if only markdown files or docs/ folder changed
+  ignore_command = "git diff --quiet HEAD^ HEAD . ':(exclude)**/*.md' ':(exclude)docs/'"
+
   environment = [
     {
       key    = "NEXT_PUBLIC_FIREBASE_API_KEY"
