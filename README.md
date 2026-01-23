@@ -23,7 +23,13 @@ Before you begin, ensure you have the following installed:
 * [Node.js](https://nodejs.org/) (v18+)
 * [pnpm](https://pnpm.io/installation)
 * [Firebase CLI](https://firebase.google.com/docs/cli)
-* [Terraform](https://developer.hashicorp.com/terraform/downloads) (optional, if you want to use the automated infra setup)
+* [Google Cloud SDK](https://cloud.google.com/sdk/docs/install) (for authentication)
+* [Terraform](https://developer.hashicorp.com/terraform/downloads) (required for automated setup)
+
+> [!IMPORTANT]
+> **1. Billing**: Automated setup requires a Google Cloud Billing Account (**Blaze** plan).
+> **2. Vercel Integration**: You must install the **[Official Vercel GitHub App](https://github.com/marketplace/vercel)** for automated deployments.
+> **3. Permissions**: Ensure the helper script is executable: `chmod +x infra/get_git_repo.sh`.
 
 ## 🏁 Getting Started
 
@@ -38,11 +44,15 @@ pnpm install
 ```
 
 ### 3. Environment Setup
-Copy the example environment file:
+
+**Option A: Automated (Terraform)**
+If you used the automated infrastructure setup, run the sync script to pull your environment variables:
 ```bash
-cp .env.example .env.local
+pnpm sync-env
 ```
-Fill in your Firebase configuration values in `.env.local`. You can find these in your Firebase Console under Project Settings.
+
+**Option B: Manual Setup**
+If you set up Firebase manually, create a `.env.local` file and fill in your keys (see [Manual Setup Guide](docs/setup-manual.md)).
 
 ### 4. Run Development Server
 ```bash
