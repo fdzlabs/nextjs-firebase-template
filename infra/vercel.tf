@@ -13,8 +13,9 @@ resource "vercel_project" "default" {
     repo = coalesce(var.vercel_git_repo, data.external.git_repo.result["repo"])
   }
 
-  # Ignore builds if only markdown files or docs/ folder changed
-  ignore_command = "git diff --quiet HEAD^ HEAD . ':(exclude)**/*.md' ':(exclude)docs/'"
+  # Ignore builds if "[skip ci]" or "[skip vercel]" is in the commit message,
+  # or if only markdown files or docs/ folder changed.
+  ignore_command = "git log -1 --pretty=%B | grep -qE '\\[skip ci\\]|\\[skip vercel\\]' && exit 0 || git diff --quiet HEAD^ HEAD . ':(exclude)**/*.md' ':(exclude)docs/'"
 
   environment = [
     {
