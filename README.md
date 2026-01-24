@@ -14,6 +14,7 @@ A robust, production-ready template for shipping web applications fast. This sta
 * **Authentication:** Firebase Auth (Email/Password, Google) pre-configured
 * **Database:** Firestore with security rules
 * **Infrastructure:** Fully automated resource provisioning via [Terraform](https://www.terraform.io/)
+* **Multi-Environment:** Support for dev/staging/prod via Terraform Workspaces ([Learn more](docs/stages.md))
 * **Type Safety:** TypeScript
 * **Package Manager:** pnpm
 

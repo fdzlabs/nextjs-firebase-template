@@ -63,6 +63,8 @@ billing_account = "000000-000000-000000"    # Required for automated project cre
 > 2.  **At most 30 characters long**.
 > We recommend appending random numbers (e.g., `my-app-9876`) but keeping it short.
 
+> **Note on Environments**: If you plan to use multiple stages (dev/prod), we recommend creating separate variable files (e.g., `dev.tfvars`, `prod.tfvars`) instead of a single `terraform.tfvars`. See [Managing Stages](./stages.md).
+
 > See [Google Cloud Locations](https://cloud.google.com/about/locations) for a list of available regions.
 > You can find your Billing Account ID in the [Google Cloud Billing Console](https://console.cloud.google.com/billing).
 
