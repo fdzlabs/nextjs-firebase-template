@@ -1,59 +1,71 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Header } from "@/components/header"
-import { Shield, Database, Zap, Lock, Users, Cloud } from "lucide-react"
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Header } from '@/components/header';
+import { Shield, Database, Zap, Lock, Users, Cloud } from 'lucide-react';
 
 function isFirebaseConfigured() {
-  if (typeof window === "undefined") return true
-
   const requiredVars = [
-    "NEXT_PUBLIC_FIREBASE_API_KEY",
-    "NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN",
-    "NEXT_PUBLIC_FIREBASE_PROJECT_ID",
-    "NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET",
-    "NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID",
-    "NEXT_PUBLIC_FIREBASE_APP_ID",
-  ]
+    'NEXT_PUBLIC_FIREBASE_API_KEY',
+    'NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN',
+    'NEXT_PUBLIC_FIREBASE_PROJECT_ID',
+    'NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET',
+    'NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID',
+    'NEXT_PUBLIC_FIREBASE_APP_ID',
+  ];
 
-  return requiredVars.every((varName) => process.env[varName] && process.env[varName] !== "demo-api-key")
+  return requiredVars.every(
+    (varName) =>
+      process.env[varName] && process.env[varName] !== 'demo-api-key',
+  );
 }
 
 const features = [
   {
     icon: Shield,
-    title: "Firebase Authentication",
-    description: "Secure user authentication with email/password and Google Sign-In out of the box.",
+    title: 'Firebase Authentication',
+    description:
+      'Secure user authentication with email/password and Google Sign-In out of the box.',
   },
   {
     icon: Database,
-    title: "Firestore Database",
-    description: "Real-time NoSQL database for storing and syncing data across clients.",
+    title: 'Firestore Database',
+    description:
+      'Real-time NoSQL database for storing and syncing data across clients.',
   },
   {
     icon: Cloud,
-    title: "Cloud Storage",
-    description: "Store and serve user-generated content like images and files with ease.",
+    title: 'Cloud Storage',
+    description:
+      'Store and serve user-generated content like images and files with ease.',
   },
   {
     icon: Zap,
-    title: "Fast Setup",
-    description: "Get started in minutes with pre-configured authentication flows and database rules.",
+    title: 'Fast Setup',
+    description:
+      'Get started in minutes with pre-configured authentication flows and database rules.',
   },
   {
     icon: Lock,
-    title: "Secure by Default",
-    description: "Built-in security rules and best practices for protecting user data.",
+    title: 'Secure by Default',
+    description:
+      'Built-in security rules and best practices for protecting user data.',
   },
   {
     icon: Users,
-    title: "User Management",
-    description: "Complete user profile management with protected routes and sessions.",
+    title: 'User Management',
+    description:
+      'Complete user profile management with protected routes and sessions.',
   },
-]
+];
 
 export default function Home() {
-  const configured = isFirebaseConfigured()
+  const configured = isFirebaseConfigured();
 
   return (
     <>
@@ -66,7 +78,9 @@ export default function Home() {
               Start building in seconds
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground text-pretty">
-              Kickstart your next project with this Firebase starter template. Authentication, database, and storage - all pre-configured and ready to go.
+              Kickstart your next project with this Firebase starter template.
+              Authentication, database, and storage - all pre-configured and
+              ready to go.
             </p>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
               <Link href="/auth/signup">
@@ -91,7 +105,8 @@ export default function Home() {
                 Everything you need to get started
               </h2>
               <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
-                This template includes all the essentials for building a modern web application with Firebase.
+                This template includes all the essentials for building a modern
+                web application with Firebase.
               </p>
             </div>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -120,7 +135,8 @@ export default function Home() {
                 Ready to build your next app?
               </h2>
               <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-                Sign up now and start building with Firebase authentication and Firestore database in minutes.
+                Sign up now and start building with Firebase authentication and
+                Firestore database in minutes.
               </p>
               <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
                 <Link href="/auth/signup">
@@ -148,5 +164,5 @@ export default function Home() {
         </footer>
       </main>
     </>
-  )
+  );
 }
