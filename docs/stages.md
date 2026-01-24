@@ -124,6 +124,8 @@ Each stage creates isolated infrastructure. Here is what happens when you create
         *   When you run `terraform apply` for your **Dev** workspace: Terraform updates Vercel's **Preview** (or Development) Environment variables with the `my-app-dev` Firebase keys.
     *   **Result:** A Pull Request build on Vercel automatically talks to your **Dev/Preview** Firebase project, not Production.
 
+    > **Note on Advanced Branching:** Strictly mapping specific branches (e.g., `staging` branch) to specific separate environments requires advanced Vercel configuration (often requiring Vercel Pro for custom Git branch environments). For this template, we stick to the simple "Production vs. Preview" model to keep things accessible on the Hobby tier.
+
 ### 3. CI/CD (GitHub Actions) - Future Integration
 **Strategy:** *When you are ready to automate deployments*, your pipeline will need to know which stage to target.
 
