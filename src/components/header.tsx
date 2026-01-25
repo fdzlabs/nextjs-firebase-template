@@ -14,6 +14,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { User, LogOut } from 'lucide-react';
 import type { User as FirebaseUser } from 'firebase/auth';
+import { ROUTES } from '@/constants/routes';
 
 interface HeaderProps {
   variant?: 'landing' | 'dashboard';
@@ -40,11 +41,11 @@ export function Header({
     if (user?.email) return user.email.split('@')[0];
     return 'User';
   };
-  console.log('user', user);
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link href="/" className="flex items-center gap-2">
+        <Link href={ROUTES.HOME} className="flex items-center gap-2">
           <Image
             src="/logo.jpg"
             alt="App Logo"
@@ -58,12 +59,12 @@ export function Header({
         <nav className="flex items-center gap-2">
           {variant === 'landing' && (
             <>
-              <Link href="/auth/signin">
+              <Link href={ROUTES.AUTH.SIGNIN}>
                 <Button variant="ghost" size="sm" disabled={!isConfigured}>
                   Sign In
                 </Button>
               </Link>
-              <Link href="/auth/signup">
+              <Link href={ROUTES.AUTH.SIGNUP}>
                 <Button size="sm" disabled={!isConfigured}>
                   Sign Up
                 </Button>
@@ -100,10 +101,12 @@ export function Header({
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem disabled className="cursor-not-allowed">
-                  <User className="mr-2 h-4 w-4" />
-                  <span>Profile</span>
-                </DropdownMenuItem>
+                <Link href={ROUTES.AUTH.PROFILE}>
+                  <DropdownMenuItem className="cursor-pointer">
+                    <User className="mr-2 h-4 w-4" />
+                    <span>Profile</span>
+                  </DropdownMenuItem>
+                </Link>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   onClick={onSignOut}

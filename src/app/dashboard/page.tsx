@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { onAuthStateChanged, signOut, type User } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import {
@@ -11,8 +12,10 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Header } from '@/components/header';
+import { ROUTES } from '@/constants/routes';
 
 export default function Dashboard() {
   const [user, setUser] = useState<User | null>(null);
@@ -25,7 +28,7 @@ export default function Dashboard() {
       setLoading(false);
 
       if (!currentUser) {
-        router.push('/auth/signin');
+        router.push(ROUTES.AUTH.SIGNIN);
       }
     });
 
@@ -35,7 +38,7 @@ export default function Dashboard() {
   const handleSignOut = async () => {
     try {
       await signOut(auth);
-      router.push('/');
+      router.push(ROUTES.HOME);
     } catch (error) {
       console.error('Error signing out:', error);
     }
@@ -87,6 +90,11 @@ export default function Dashboard() {
                 This is a starter dashboard. You can extend it with Firebase
                 Firestore, Storage, and other services.
               </p>
+              <Link href={ROUTES.AUTH.PROFILE}>
+                <Button variant="outline" className="w-full">
+                  Edit Profile
+                </Button>
+              </Link>
             </div>
           </CardContent>
         </Card>

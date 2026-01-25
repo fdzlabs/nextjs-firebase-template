@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/card';
 import { Header } from '@/components/header';
 import { Shield, Database, Zap, Lock, Users, Cloud } from 'lucide-react';
+import { ROUTES } from '@/constants/routes';
 
 function isFirebaseConfigured() {
   const requiredVars = [
@@ -83,12 +84,12 @@ export default function Home() {
               ready to go.
             </p>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-              <Link href="/auth/signup">
+              <Link href={ROUTES.AUTH.SIGNUP}>
                 <Button size="lg" disabled={!configured}>
                   Get Started
                 </Button>
               </Link>
-              <Link href="/setup">
+              <Link href={ROUTES.SETUP}>
                 <Button variant="outline" size="lg" className="bg-transparent">
                   View Setup Guide
                 </Button>
@@ -139,12 +140,12 @@ export default function Home() {
                 Firestore database in minutes.
               </p>
               <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-                <Link href="/auth/signup">
+                <Link href={ROUTES.AUTH.SIGNUP}>
                   <Button size="lg" disabled={!configured}>
                     Create Account
                   </Button>
                 </Link>
-                <Link href="/auth/signin">
+                <Link href={ROUTES.AUTH.SIGNIN}>
                   <Button variant="ghost" size="lg" disabled={!configured}>
                     Sign In
                   </Button>
