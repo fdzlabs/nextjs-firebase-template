@@ -12,38 +12,53 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Skeleton } from '@/components/ui/skeleton';
 import { User, LogOut } from 'lucide-react';
-import type { User as FirebaseUser } from 'firebase/auth';
+import { useAuth } from '@/components/auth-provider';
 import { ROUTES } from '@/constants/routes';
+import { signOut } from 'firebase/auth';
+import { auth } from '@/lib/firebase';
+import { useRouter } from 'next/navigation';
 
-interface HeaderProps {
-  variant?: 'landing' | 'dashboard';
-  isConfigured?: boolean;
-  onSignOut?: () => void;
-  user?: FirebaseUser | null;
+function isFirebaseConfigured() {
+  return !!(
+    process.env.NEXT_PUBLIC_FIREBASE_API_KEY &&
+    process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN &&
+    process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID &&
+    process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET &&
+    process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID &&
+    process.env.NEXT_PUBLIC_FIREBASE_APP_ID &&
+    process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== 'demo-api-key'
+  );
 }
 
-export function Header({
-  variant = 'landing',
-  isConfigured = true,
-  onSignOut,
-  user,
-}: HeaderProps) {
-  // Get user initials for avatar fallback
+export function Header() {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+  const isConfigured = isFirebaseConfigured();
+
   const getUserInitials = (email: string | null | undefined) => {
     if (!email) return 'U';
     return email.charAt(0).toUpperCase();
   };
 
-  // Get display name or email
   const getDisplayName = () => {
     if (user?.displayName) return user.displayName;
     if (user?.email) return user.email.split('@')[0];
     return 'User';
   };
 
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      router.push(ROUTES.HOME);
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link href={ROUTES.HOME} className="flex items-center gap-2">
           <Image
@@ -57,7 +72,9 @@ export function Header({
         </Link>
 
         <nav className="flex items-center gap-2">
-          {variant === 'landing' && (
+          {loading ? (
+            <Skeleton className="h-10 w-10 rounded-full" />
+          ) : !user ? (
             <>
               <Link href={ROUTES.AUTH.SIGNIN}>
                 <Button variant="ghost" size="sm" disabled={!isConfigured}>
@@ -70,9 +87,8 @@ export function Header({
                 </Button>
               </Link>
             </>
-          )}
-          {variant === 'dashboard' && user && onSignOut && (
-            <DropdownMenu>
+          ) : (
+            <DropdownMenu modal={false}>
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
@@ -101,6 +117,12 @@ export function Header({
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
+                <Link href={ROUTES.DASHBOARD}>
+                  <DropdownMenuItem className="cursor-pointer">
+                    <User className="mr-2 h-4 w-4" />
+                    <span>Dashboard</span>
+                  </DropdownMenuItem>
+                </Link>
                 <Link href={ROUTES.AUTH.PROFILE}>
                   <DropdownMenuItem className="cursor-pointer">
                     <User className="mr-2 h-4 w-4" />
@@ -109,7 +131,7 @@ export function Header({
                 </Link>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
-                  onClick={onSignOut}
+                  onClick={handleSignOut}
                   className="cursor-pointer"
                 >
                   <LogOut className="mr-2 h-4 w-4" />

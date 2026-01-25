@@ -1,26 +1,51 @@
-import Link from "next/link"
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import FirebaseConfigGuide from "@/components/firebase-config-guide"
+import Link from 'next/link';
+import Image from 'next/image';
+import type { Metadata } from 'next';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import FirebaseConfigGuide from '@/components/firebase-config-guide';
+import { ROUTES } from '@/constants/routes';
+
+export const metadata: Metadata = {
+  title: 'Setup Guide',
+  description:
+    'Step-by-step guide to set up your Firebase project for this Next.js template',
+};
 
 export default function Setup() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center p-4 bg-gray-50">
+    <div className="flex min-h-screen flex-col items-center justify-center p-4 bg-background">
       <Card className="w-full max-w-3xl">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
-            <Image src="/firebase-logo.png" alt="Firebase Logo" width={150} height={50} className="h-auto" />
+            <Image
+              src="/firebase-logo.png"
+              alt="Firebase Logo"
+              width={150}
+              height={50}
+              className="h-auto"
+            />
           </div>
           <CardTitle className="text-2xl">Firebase Starter Setup</CardTitle>
-          <CardDescription>Follow these steps to set up your Firebase project</CardDescription>
+          <CardDescription>
+            Follow these steps to set up your Firebase project
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-4">
-            <h3 className="text-lg font-medium">Step 1: Create a Firebase Project</h3>
+            <h3 className="text-lg font-medium">
+              Step 1: Create a Firebase Project
+            </h3>
             <ol className="list-decimal list-inside space-y-2 text-sm">
               <li>
-                Go to the{" "}
+                Go to the{' '}
                 <a
                   href="https://console.firebase.google.com/"
                   target="_blank"
@@ -39,19 +64,30 @@ export default function Setup() {
           </div>
 
           <div className="space-y-4">
-            <h3 className="text-lg font-medium">Step 2: Configure Google Authentication</h3>
+            <h3 className="text-lg font-medium">
+              Step 2: Configure Google Authentication
+            </h3>
             <ol className="list-decimal list-inside space-y-2 text-sm">
-              <li>In Firebase Console, go to Authentication → Sign-in method</li>
+              <li>
+                In Firebase Console, go to Authentication → Sign-in method
+              </li>
               <li>Enable Google provider</li>
               <li>Add your domain to authorized domains (for production)</li>
-              <li>Copy the Web client ID if you need additional Google API access</li>
+              <li>
+                Copy the Web client ID if you need additional Google API access
+              </li>
             </ol>
           </div>
 
           <div className="space-y-4">
-            <h3 className="text-lg font-medium">Step 3: Register Your Web App</h3>
+            <h3 className="text-lg font-medium">
+              Step 3: Register Your Web App
+            </h3>
             <ol className="list-decimal list-inside space-y-2 text-sm">
-              <li>In your Firebase project, click the web icon ({"<>"}) to add a web app</li>
+              <li>
+                In your Firebase project, click the web icon ({'<>'}) to add a
+                web app
+              </li>
               <li>Register your app with a nickname</li>
               <li>Copy the Firebase configuration object</li>
             </ol>
@@ -60,24 +96,35 @@ export default function Setup() {
           <FirebaseConfigGuide />
 
           <div className="space-y-4">
-            <h3 className="text-lg font-medium">Step 5: Run Your Application</h3>
+            <h3 className="text-lg font-medium">
+              Step 5: Run Your Application
+            </h3>
             <ol className="list-decimal list-inside space-y-2 text-sm">
               <li>
-                Start your development server with <code className="bg-muted px-1 py-0.5 rounded">npm run dev</code>
+                Start your development server with{' '}
+                <code className="bg-muted px-1 py-0.5 rounded">
+                  npm run dev
+                </code>
               </li>
               <li>
-                Visit <code className="bg-muted px-1 py-0.5 rounded">http://localhost:3000</code> to see your app
+                Visit{' '}
+                <code className="bg-muted px-1 py-0.5 rounded">
+                  http://localhost:3000
+                </code>{' '}
+                to see your app
               </li>
-              <li>Try signing up and signing in with email/password or Google</li>
+              <li>
+                Try signing up and signing in with email/password or Google
+              </li>
             </ol>
           </div>
         </CardContent>
         <CardFooter className="flex justify-center">
-          <Link href="/">
+          <Link href={ROUTES.HOME}>
             <Button>Return to Home</Button>
           </Link>
         </CardFooter>
       </Card>
     </div>
-  )
+  );
 }

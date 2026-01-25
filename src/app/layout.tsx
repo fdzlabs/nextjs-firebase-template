@@ -4,13 +4,18 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { AuthProvider } from '@/components/auth-provider';
 import { ThemeProvider } from '@/components/theme-provider';
+import { Header } from '@/components/header';
+import { Footer } from '@/components/footer';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Firebase Starter',
-  description: 'A starter template for Firebase with Next.js',
-  generator: 'v0.app',
+  title: {
+    default: 'Next.js Firebase Template',
+    template: '%s | Next.js Firebase Template',
+  },
+  description: 'A production-ready template for Next.js with Firebase',
+  generator: 'Next.js + Firebase + Terraform by FDZ Labs',
 };
 
 export default function RootLayout({
@@ -22,7 +27,13 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <AuthProvider>{children}</AuthProvider>
+          <AuthProvider>
+            <div className="relative flex min-h-screen flex-col">
+              <Header />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

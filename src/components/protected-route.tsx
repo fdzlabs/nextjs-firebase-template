@@ -8,11 +8,11 @@ import { useAuth } from './auth-provider';
 import { ROUTES } from '@/constants/routes';
 
 export default function ProtectedRoute({
-  hideSkeleton,
   children,
+  skeleton,
 }: {
   children: React.ReactNode;
-  hideSkeleton?: boolean;
+  skeleton?: React.ReactNode;
 }) {
   const { user, loading } = useAuth();
   const router = useRouter();
@@ -23,12 +23,8 @@ export default function ProtectedRoute({
     }
   }, [user, loading, router]);
 
-  if (loading && !hideSkeleton) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        Loading...
-      </div>
-    );
+  if (loading) {
+    return <>{skeleton ?? <div className="flex min-h-screen items-center justify-center">Loading...</div>}</>;
   }
 
   return user ? <>{children}</> : null;
