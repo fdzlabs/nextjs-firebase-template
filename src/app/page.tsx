@@ -173,7 +173,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="px-4 py-20">
+      {/* <section className="px-4 py-20">
         <div className="container mx-auto max-w-4xl">
           <Card className="border-border bg-card p-8 text-center md:p-12">
             <h2 className="text-2xl font-bold tracking-tight md:text-3xl">
@@ -197,7 +197,7 @@ export default function Home() {
             </div>
           </Card>
         </div>
-      </section>
+      </section> */}
     </main>
   );
 }

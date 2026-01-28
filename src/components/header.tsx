@@ -1,7 +1,9 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -13,7 +15,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
-import { User, LogOut } from 'lucide-react';
+import { User, LogOut, Moon, Sun } from 'lucide-react';
 import { useAuth } from '@/components/auth-provider';
 import { ROUTES } from '@/constants/routes';
 import { signOut } from 'firebase/auth';
@@ -36,6 +38,14 @@ export function Header() {
   const { user, loading } = useAuth();
   const router = useRouter();
   const isConfigured = isFirebaseConfigured();
+  const { theme, resolvedTheme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const isDark = (resolvedTheme ?? theme) === 'dark';
 
   const getUserInitials = (email: string | null | undefined) => {
     if (!email) return 'U';
@@ -72,6 +82,26 @@ export function Header() {
         </Link>
 
         <nav className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="icon"
+            type="button"
+            aria-label={
+              isDark ? 'Switch to light theme' : 'Switch to dark theme'
+            }
+            onClick={() => setTheme(isDark ? 'light' : 'dark')}
+            className="relative"
+          >
+            {mounted ? (
+              isDark ? (
+                <Sun className="h-4 w-4" />
+              ) : (
+                <Moon className="h-4 w-4" />
+              )
+            ) : (
+              <span className="h-4 w-4" aria-hidden="true" />
+            )}
+          </Button>
           {loading ? (
             <Skeleton className="h-10 w-10 rounded-full" />
           ) : !user ? (

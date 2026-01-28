@@ -1,71 +1,87 @@
-"use client"
+'use client';
 
-import type React from "react"
+import type React from 'react';
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import Link from "next/link"
-import Image from "next/image"
-import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth"
-import { auth, googleProvider, isConfigured } from "@/lib/firebase"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Separator } from "@/components/ui/separator"
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import Image from 'next/image';
+import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { auth, googleProvider, isConfigured } from '@/lib/firebase';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Separator } from '@/components/ui/separator';
 
 export default function SignIn() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [error, setError] = useState("")
-  const [loading, setLoading] = useState(false)
-  const router = useRouter()
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleSignIn = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError("")
-    setLoading(true)
+    e.preventDefault();
+    setError('');
+    setLoading(true);
 
     try {
-      await signInWithEmailAndPassword(auth, email, password)
-      router.push("/dashboard")
+      await signInWithEmailAndPassword(auth, email, password);
+      router.push('/dashboard');
     } catch (error: any) {
-      setError(error.message || "Failed to sign in")
+      setError(error.message || 'Failed to sign in');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleGoogleSignIn = async () => {
-    setError("")
-    setLoading(true)
+    setError('');
+    setLoading(true);
 
     try {
-      await signInWithPopup(auth, googleProvider)
-      router.push("/dashboard")
+      await signInWithPopup(auth, googleProvider);
+      router.push('/dashboard');
     } catch (error: any) {
-      setError(error.message || "Failed to sign in with Google")
+      setError(error.message || 'Failed to sign in with Google');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   if (!isConfigured) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center p-4 bg-gray-50">
+      <div className="flex min-h-screen flex-col items-center justify-center p-4">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
             <div className="flex justify-center mb-4">
-              <Image src="/firebase-logo.png" alt="Firebase Logo" width={120} height={40} className="h-auto" />
+              <Image
+                src="/firebase-logo.png"
+                alt="Firebase Logo"
+                width={120}
+                height={40}
+                className="h-auto"
+              />
             </div>
             <CardTitle className="text-2xl">Configuration Required</CardTitle>
-            <CardDescription>Firebase environment variables are missing</CardDescription>
+            <CardDescription>
+              Firebase environment variables are missing
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <Alert variant="destructive">
               <AlertDescription>
-                Please configure your Firebase environment variables to use authentication.
+                Please configure your Firebase environment variables to use
+                authentication.
                 <br />
                 <Link href="/setup" className="underline mt-2 inline-block">
                   View setup guide
@@ -75,18 +91,26 @@ export default function SignIn() {
           </CardContent>
         </Card>
       </div>
-    )
+    );
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center p-4 bg-gray-50">
+    <div className="flex min-h-screen flex-col items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
-            <Image src="/firebase-logo.png" alt="Firebase Logo" width={120} height={40} className="h-auto" />
+            <Image
+              src="/firebase-logo.png"
+              alt="Firebase Logo"
+              width={120}
+              height={40}
+              className="h-auto"
+            />
           </div>
           <CardTitle className="text-2xl">Sign In</CardTitle>
-          <CardDescription>Enter your credentials to access your account</CardDescription>
+          <CardDescription>
+            Enter your credentials to access your account
+          </CardDescription>
         </CardHeader>
         <CardContent>
           {error && (
@@ -95,7 +119,12 @@ export default function SignIn() {
             </Alert>
           )}
 
-          <Button onClick={handleGoogleSignIn} variant="outline" className="w-full mb-4" disabled={loading}>
+          <Button
+            onClick={handleGoogleSignIn}
+            variant="outline"
+            className="w-full mb-4"
+            disabled={loading}
+          >
             <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24">
               <path
                 fill="#4285F4"
@@ -120,7 +149,9 @@ export default function SignIn() {
           <div className="relative mb-4">
             <Separator />
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="bg-background px-2 text-xs text-muted-foreground">or</span>
+              <span className="bg-background px-2 text-xs text-muted-foreground">
+                or
+              </span>
             </div>
           </div>
 
@@ -139,7 +170,10 @@ export default function SignIn() {
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <Label htmlFor="password">Password</Label>
-                <Link href="/auth/reset-password" className="text-xs text-primary hover:underline">
+                <Link
+                  href="/auth/reset-password"
+                  className="text-xs text-primary hover:underline"
+                >
                   Forgot password?
                 </Link>
               </div>
@@ -152,13 +186,13 @@ export default function SignIn() {
               />
             </div>
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Signing in..." : "Sign In"}
+              {loading ? 'Signing in...' : 'Sign In'}
             </Button>
           </form>
         </CardContent>
         <CardFooter className="flex justify-center">
           <p className="text-sm text-muted-foreground">
-            Don&apos;t have an account?{" "}
+            Don&apos;t have an account?{' '}
             <Link href="/auth/signup" className="text-primary hover:underline">
               Sign up
             </Link>
@@ -166,5 +200,5 @@ export default function SignIn() {
         </CardFooter>
       </Card>
     </div>
-  )
+  );
 }
