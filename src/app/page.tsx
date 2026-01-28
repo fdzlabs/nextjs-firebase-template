@@ -67,8 +67,7 @@ function isFirebaseConfigured() {
   ];
 
   return requiredVars.every(
-    (varName) =>
-      process.env[varName] && process.env[varName] !== 'demo-api-key',
+    (varName) => process.env[varName] && process.env[varName] !== 'demo-api-key'
   );
 }
 
@@ -128,7 +127,7 @@ export default function Home() {
             to go.
           </p>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <Link href={ROUTES.AUTH.SIGNUP}>
+            <Link href={ROUTES.AUTH.SUBSCRIPTION}>
               <Button size="lg" disabled={!configured}>
                 Get Started
               </Button>

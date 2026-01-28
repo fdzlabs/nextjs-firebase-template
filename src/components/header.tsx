@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
-import { User, LogOut, Moon, Sun } from 'lucide-react';
+import { User, LogOut, Moon, Sun, CreditCard } from 'lucide-react';
 import { useAuth } from '@/components/auth-provider';
 import { ROUTES } from '@/constants/routes';
 import { signOut } from 'firebase/auth';
@@ -87,10 +87,15 @@ export function Header() {
             size="icon"
             type="button"
             aria-label={
-              isDark ? 'Switch to light theme' : 'Switch to dark theme'
+              mounted
+                ? isDark
+                  ? 'Switch to light theme'
+                  : 'Switch to dark theme'
+                : 'Toggle theme'
             }
             onClick={() => setTheme(isDark ? 'light' : 'dark')}
             className="relative"
+            suppressHydrationWarning
           >
             {mounted ? (
               isDark ? (
@@ -151,6 +156,12 @@ export function Header() {
                   <DropdownMenuItem className="cursor-pointer">
                     <User className="mr-2 h-4 w-4" />
                     <span>Dashboard</span>
+                  </DropdownMenuItem>
+                </Link>
+                <Link href={ROUTES.AUTH.SUBSCRIPTION}>
+                  <DropdownMenuItem className="cursor-pointer">
+                    <CreditCard className="mr-2 h-4 w-4" />
+                    <span>Subscription</span>
                   </DropdownMenuItem>
                 </Link>
                 <Link href={ROUTES.AUTH.PROFILE}>

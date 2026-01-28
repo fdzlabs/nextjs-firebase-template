@@ -13,6 +13,7 @@ export const ROUTES = {
     SIGNIN: '/auth/signin',
     SIGNUP: '/auth/signup',
     PROFILE: '/auth/profile',
+    SUBSCRIPTION: '/subscription',
   },
 
   // Protected routes
@@ -20,4 +21,6 @@ export const ROUTES = {
 } as const;
 
 // Type helper for route values
-export type Route = typeof ROUTES[keyof typeof ROUTES] | typeof ROUTES.AUTH[keyof typeof ROUTES.AUTH];
+export type Route =
+  | (typeof ROUTES)[keyof typeof ROUTES]
+  | (typeof ROUTES.AUTH)[keyof typeof ROUTES.AUTH];
