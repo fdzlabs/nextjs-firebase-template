@@ -45,7 +45,7 @@ export function SubscriptionClient({ plans }: { plans: Plan[] }) {
 
   return (
     <>
-      {!canSelectPlan && (
+      {!loading && !user && (
         <Alert>
           <AlertDescription className="flex flex-wrap items-center gap-1">
             <span>Please</span>
@@ -71,7 +71,9 @@ export function SubscriptionClient({ plans }: { plans: Plan[] }) {
               <CardHeader className="space-y-3">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-xl">{plan.name}</CardTitle>
-                  {plan.badge && <Badge variant="secondary">{plan.badge}</Badge>}
+                  {plan.badge && (
+                    <Badge variant="secondary">{plan.badge}</Badge>
+                  )}
                 </div>
                 <div className="space-y-1">
                   <p className="text-3xl font-semibold">{plan.price}</p>
