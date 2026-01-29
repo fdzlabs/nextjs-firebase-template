@@ -37,6 +37,7 @@ export default function ProfilePage() {
   // Form states
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
+  const [currentEmailPassword, setCurrentEmailPassword] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -50,7 +51,7 @@ export default function ProfilePage() {
   // Check if user is using Google Auth
   const isGoogleUser =
     user?.providerData.some(
-      (provider) => provider.providerId === GOOGLE_PROVIDER_ID,
+      (provider) => provider.providerId === GOOGLE_PROVIDER_ID
     ) || false;
 
   useEffect(() => {
@@ -111,7 +112,9 @@ export default function ProfilePage() {
 
     try {
       if (!user) throw new Error('No user logged in');
-      if (!currentPassword) throw new Error('Current password is required');
+      if (!currentEmailPassword) {
+        throw new Error('Current password is required');
+      }
 
       // Validate new email is different
       if (email === user.email) {
@@ -121,7 +124,7 @@ export default function ProfilePage() {
       // Reauthenticate user before updating email
       const credential = EmailAuthProvider.credential(
         user.email!,
-        currentPassword,
+        currentEmailPassword
       );
       await reauthenticateWithCredential(user, credential);
 
@@ -132,9 +135,9 @@ export default function ProfilePage() {
       setMessage(
         'Verification email sent! Please check your inbox at ' +
           email +
-          ' and click the verification link to complete the email change.',
+          ' and click the verification link to complete the email change.'
       );
-      setCurrentPassword('');
+      setCurrentEmailPassword('');
     } catch (error: any) {
       switch (error.code) {
         case 'auth/requires-recent-login':
@@ -181,7 +184,7 @@ export default function ProfilePage() {
       // Reauthenticate user before updating password
       const credential = EmailAuthProvider.credential(
         user.email!,
-        currentPassword,
+        currentPassword
       );
       await reauthenticateWithCredential(user, credential);
 
@@ -300,8 +303,10 @@ export default function ProfilePage() {
                     id="currentPasswordEmail"
                     type="password"
                     placeholder="Enter your current password"
-                    value={currentPassword}
-                    onChange={(e) => setCurrentPassword(e.target.value)}
+                    value={currentEmailPassword}
+                    onChange={(e) => setCurrentEmailPassword(e.target.value)}
+                    name="current-password-email"
+                    autoComplete="new-password"
                     disabled={emailVerificationSent}
                   />
                 </div>
@@ -321,8 +326,8 @@ export default function ProfilePage() {
                   {loading
                     ? 'Sending...'
                     : emailVerificationSent
-                      ? 'Verification Email Sent'
-                      : 'Send Verification Email'}
+                    ? 'Verification Email Sent'
+                    : 'Send Verification Email'}
                 </Button>
               </form>
             </CardContent>
