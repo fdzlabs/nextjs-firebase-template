@@ -111,6 +111,11 @@ export function Header() {
             <Skeleton className="h-10 w-10 rounded-full" />
           ) : !user ? (
             <>
+              <Link href={ROUTES.AUTH.SUBSCRIPTION}>
+                <Button variant="ghost" size="sm">
+                  Pricing
+                </Button>
+              </Link>
               <Link href={ROUTES.AUTH.SIGNIN}>
                 <Button variant="ghost" size="sm" disabled={!isConfigured}>
                   Sign In
