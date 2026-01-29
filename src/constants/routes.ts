@@ -14,6 +14,7 @@ export const ROUTES = {
     SIGNUP: '/auth/signup',
     PROFILE: '/auth/profile',
     SUBSCRIPTION: '/subscription',
+    RESET_PASSWORD: '/auth/reset-password',
   },
 
   // Protected routes
