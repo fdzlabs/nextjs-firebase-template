@@ -141,14 +141,13 @@ Type `yes` when prompted to confirm.
 
 ### 5. Sync Environment Variables
 
-Once infrastructure is deployed, run the sync script to populate your local environment variables for the frontend:
+Terraform must be applied at least once for your current workspace (and `-var-file` if used) before syncing. From the **repository root** (not inside `infra`), run:
 
 ```bash
-# From the root directory
-node infra/sync-env.js
+pnpm sync-env
 ```
 
-This will create or update `.env.local` with your new Firebase configuration keys.
+This reads Terraform outputs and creates or updates `.env.local` with your Firebase configuration keys. Alternatively, you can run `node infra/sync-env.cjs` from the repo root.
 
 ## Troubleshooting
 

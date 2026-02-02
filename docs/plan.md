@@ -31,14 +31,16 @@ This document outlines the plan for creating the Next.js + Firebase Template inf
 ## Workflow Scenarios
 
 ### Scenario A: Automated Setup (Recommended for Teams/Blaze)
-1. `cd infra`
-2. `terraform apply`
-3. `npm run sync-env` (Populates `.env.local`)
-4. Start App.
+1. Clone repo, `pnpm install`.
+2. `gcloud auth application-default login`.
+3. `cd infra`, `terraform init`, create `terraform.tfvars` (e.g. from `terraform.tfvars.example`).
+4. `terraform apply`.
+5. From repo root: `pnpm sync-env` (populates `.env.local`).
+6. `pnpm dev`.
 
 ### Scenario B: Manual Setup (Free Tier)
-1. Create Project in Firebase Console.
+1. Create project in Firebase Console.
 2. Enable Auth, Firestore, Storage manually.
-3. Copy config values from Console -> Project Settings.
+3. Copy config values from Console → Project Settings.
 4. Paste into `.env.local`.
 

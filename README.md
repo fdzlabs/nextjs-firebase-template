@@ -3,81 +3,124 @@
 [![Built by FDZ Labs](https://img.shields.io/badge/Built%20by-FDZ%20Labs-000000)](https://fdzlabs.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A robust, production-ready template for shipping web applications fast. This starter kit combines the power of **Next.js (App Router)** for the frontend, **Firebase** for backend services (Auth & Firestore), and **Terraform** for reproducible infrastructure.
+A production-ready template for shipping web apps quickly. It pairs **Next.js (App Router)** with **Firebase** (Auth, Firestore, Storage) and uses **Terraform** to provision infrastructure. You can run everything locally after syncing env from Terraform outputs, or deploy to **Vercel** with optional Terraform-managed project linking.
 
-> **Note:** This is a template repository. Click the green **"Use this template"** button above to start a new project with this codebase.
+> **Note:** This is a template repository. Click the green **"Use this template"** button above to create your own project from this codebase.
 
-## 🚀 Features
+## Overview
 
-* **Framework:** [Next.js 16](https://nextjs.org/) (App Router)
-* **Styling:** [Tailwind CSS](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/)
-* **Authentication:** Firebase Auth (Email/Password, Google) pre-configured
-* **Database:** Firestore with security rules
-* **Infrastructure:** Fully automated resource provisioning via [Terraform](https://www.terraform.io/)
-* **Multi-Environment:** Support for dev/staging/prod via Terraform Workspaces ([Learn more](docs/stages.md))
-* **Type Safety:** TypeScript
-* **Package Manager:** pnpm
+- **Frontend:** [Next.js 16](https://nextjs.org/) (App Router), [Tailwind CSS](https://tailwindcss.com/), [shadcn/ui](https://ui.shadcn.com/), TypeScript.
+- **Backend:** Firebase Auth (Email/Password, optional Google), Firestore, Storage.
+- **Infrastructure:** Terraform in `infra/` provisions the Firebase project and optional Vercel project; a sync script writes Terraform outputs into `.env.local` so the app runs without manual key copying.
+- **Environments:** Optional dev/staging/prod via Terraform workspaces—see [Managing Stages](docs/stages.md).
 
-## 🛠️ Prerequisites
+## Prerequisites
 
-Before you begin, ensure you have the following installed:
-* [Node.js](https://nodejs.org/) (v18+)
-* [pnpm](https://pnpm.io/installation)
-* [Firebase CLI](https://firebase.google.com/docs/cli)
-* [Google Cloud SDK](https://cloud.google.com/sdk/docs/install) (for authentication)
-* [Terraform](https://developer.hashicorp.com/terraform/downloads) (required for automated setup)
+**Common (all setups)**
 
-> [!IMPORTANT]
-> **1. Billing**: Automated setup requires a Google Cloud Billing Account (**Blaze** plan).
-> **2. Vercel Integration**: You must install the **[Official Vercel GitHub App](https://github.com/marketplace/vercel)** for automated deployments.
-> **3. Permissions**: Ensure the helper script is executable: `chmod +x infra/get_git_repo.sh`.
+- [Node.js](https://nodejs.org/) (v18+)
+- [pnpm](https://pnpm.io/installation)
 
-## 🏁 Getting Started
+**Terraform path (recommended)**
+
+- [Terraform](https://developer.hashicorp.com/terraform/downloads)
+- [Google Cloud SDK](https://cloud.google.com/sdk/docs/install) (for `gcloud auth application-default login`) or a [service account key](docs/setup-automated.md#alternative-service-account-key)
+- A [Google Cloud Billing Account](https://console.cloud.google.com/billing) (Blaze plan required for automated project/API setup)
+
+**Optional (only if using Terraform to provision Vercel)**
+
+- [Vercel GitHub App](https://github.com/marketplace/vercel) installed for the repo
+- `chmod +x infra/get_git_repo.sh`
+
+**Manual path (no Terraform)**
+
+- Access to the [Firebase Console](https://console.firebase.google.com/). Firebase CLI is only needed if you use it for deploy or emulators; the template runs with keys in `.env.local`.
+
+## Getting Started (Terraform – recommended)
 
 ### 1. Create your repository
-Click the **[Use this template](https://github.com/new?template_name=nextjs-firebase-template&template_owner=fdzlabs)** button at the top of this page to create your own repository.
 
-### 2. Clone and Install
+Use the **[Use this template](https://github.com/new?template_name=nextjs-firebase-template&template_owner=fdzlabs)** button, then clone and install:
+
 ```bash
 git clone https://github.com/your-username/your-new-project.git
 cd your-new-project
 pnpm install
 ```
 
-### 3. Environment Setup
+### 2. Authenticate with Google Cloud
 
-**Option A: Automated (Terraform)**
-If you used the automated infrastructure setup, run the sync script to pull your environment variables:
+Terraform uses Application Default Credentials:
+
+```bash
+gcloud auth application-default login
+```
+
+### 3. Initialize and configure Terraform
+
+```bash
+cd infra
+terraform init
+```
+
+Copy the example variables file and edit with your values (see [infra/terraform.tfvars.example](infra/terraform.tfvars.example)):
+
+```bash
+cp terraform.tfvars.example terraform.tfvars
+# Edit terraform.tfvars: project_id, billing_account, etc.
+```
+
+You need at least `project_id` (globally unique), `project_name`, `region`, and `billing_account`. For multiple environments, use workspaces and `-var-file`—see [Managing Stages](docs/stages.md).
+
+### 4. Deploy infrastructure
+
+```bash
+terraform plan
+terraform apply
+```
+
+Type `yes` when prompted.
+
+### 5. Sync environment variables
+
+From the **repository root** (not inside `infra`), run:
+
 ```bash
 pnpm sync-env
 ```
 
-**Option B: Manual Setup**
-If you set up Firebase manually, create a `.env.local` file and fill in your keys (see [Manual Setup Guide](docs/setup-manual.md)).
+This reads Terraform outputs and writes `.env.local` with the Firebase config. You must have applied Terraform at least once for the current workspace before this step.
 
-### 4. Run Development Server
+### 6. Run the app
+
 ```bash
 pnpm dev
 ```
-Open [http://localhost:3000](http://localhost:3000) to see the app.
 
-## ☁️ Infrastructure & Setup
+Open [http://localhost:3000](http://localhost:3000).
 
-This template offers two ways to set up your Firebase project:
+## Alternative: Manual setup (Spark / free tier)
 
-### Option A: Automated (Recommended)
-Use Terraform to automatically provision your Firebase project, enable APIs, and configure authentication.
-👉 **[Read the Automated Setup Guide](docs/setup-automated.md)**
+If you prefer not to use Terraform or billing:
 
-### Option B: Manual
-Prefer to click through the Firebase Console? We have a checklist for that.
-👉 **[Read the Manual Setup Guide](docs/setup-manual.md)**
+1. Create a project and web app in the [Firebase Console](https://console.firebase.google.com/).
+2. Enable Authentication (Email/Password), Firestore, and Storage.
+3. Create `.env.local` in the repo root with your Firebase config keys.
 
-## 📂 Project Structure
+Full steps and the exact env vars are in the [Manual Setup Guide](docs/setup-manual.md).
+
+## Infrastructure and deployment
+
+- **Automated (Terraform):** [Automated Setup Guide](docs/setup-automated.md)—auth, variables, optional Google Sign-In and Vercel.
+- **Manual (Console):** [Manual Setup Guide](docs/setup-manual.md).
+- **Vercel + Git:** [Vercel Integration](docs/vercel-integration.md).
+- **Multiple environments:** [Managing Stages](docs/stages.md).
+
+## Project structure
 
 ```
 ├── docs/               # Setup guides and documentation
-├── infra/              # Terraform infrastructure code
+├── infra/              # Terraform (Firebase, optional Vercel)
 ├── src/
 │   ├── app/            # Next.js App Router pages
 │   ├── components/     # React components (shadcn/ui)
@@ -87,15 +130,13 @@ Prefer to click through the Firebase Console? We have a checklist for that.
 └── ...config files
 ```
 
-## 🤝 Contributing
+## Contributing
 
-Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for our code of conduct and how to submit pull requests.
 
-## 📄 License
+## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-Show some ❤️  by giving the star to this repo :)
+This project is licensed under the MIT License—see [LICENSE](LICENSE).
 
 ---
 *Created by [Alexander Fernandez](https://github.com/your-github-username) at [FDZ Labs](https://fdzlabs.com).*
