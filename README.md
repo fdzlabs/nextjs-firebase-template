@@ -12,7 +12,7 @@ A production-ready template for shipping web apps quickly. It pairs **Next.js (A
 - **Frontend:** [Next.js 16](https://nextjs.org/) (App Router), [Tailwind CSS](https://tailwindcss.com/), [shadcn/ui](https://ui.shadcn.com/), TypeScript.
 - **Backend:** Firebase Auth (Email/Password, optional Google), Firestore, Storage.
 - **Infrastructure:** Terraform in `infra/` provisions the Firebase project and optional Vercel project; a sync script writes Terraform outputs into `.env.local` so the app runs without manual key copying.
-- **Environments:** Optional dev/staging/prod via Terraform workspaces—see [Managing Stages](docs/stages.md).
+- **Environments:** Multi-environment (e.g. dev and prod) by default via Terraform workspaces and per-environment variable files—see [Managing Stages](docs/stages.md).
 
 ## Prerequisites
 
@@ -63,23 +63,29 @@ cd infra
 terraform init
 ```
 
-Copy the example variables file and edit with your values (see [infra/terraform.tfvars.example](infra/terraform.tfvars.example)):
+The template uses **multiple environments** by default (e.g. `dev` and `prod`). Each environment has its own Terraform workspace and a `.tfvars` file. Create the workspaces and variable files (see [infra/terraform.tfvars.example](infra/terraform.tfvars.example)):
 
 ```bash
-cp terraform.tfvars.example terraform.tfvars
-# Edit terraform.tfvars: project_id, billing_account, etc.
+terraform workspace new dev
+terraform workspace new prod
+cp terraform.tfvars.example dev.tfvars
+cp terraform.tfvars.example prod.tfvars
+# Edit dev.tfvars and prod.tfvars: project_id (globally unique per env), project_name, region, billing_account
 ```
 
-You need at least `project_id` (globally unique), `project_name`, `region`, and `billing_account`. For multiple environments, use workspaces and `-var-file`—see [Managing Stages](docs/stages.md).
+Use a distinct `project_id` per environment (e.g. `my-app-dev`, `my-app-prod`). Full details: [Managing Stages](docs/stages.md). For a single environment only, you can use the `default` workspace and a single `terraform.tfvars` instead.
 
 ### 4. Deploy infrastructure
 
+Deploy each environment by selecting its workspace and applying with the matching var file. For example, deploy dev first:
+
 ```bash
-terraform plan
-terraform apply
+terraform workspace select dev
+terraform plan -var-file="dev.tfvars"
+terraform apply -var-file="dev.tfvars"
 ```
 
-Type `yes` when prompted.
+Type `yes` when prompted. Repeat for `prod` (or other stages) when ready: `terraform workspace select prod` then `terraform apply -var-file="prod.tfvars"`.
 
 ### 5. Sync environment variables
 
@@ -89,7 +95,7 @@ From the **repository root** (not inside `infra`), run:
 pnpm sync-env
 ```
 
-This reads Terraform outputs and writes `.env.local` with the Firebase config. You must have applied Terraform at least once for the current workspace before this step.
+This reads Terraform outputs for the **current workspace** and writes `.env.local`. Switch to the environment you want to run locally (e.g. `cd infra && terraform workspace select dev`), then from the repo root run `pnpm sync-env` so `.env.local` matches that environment. You must have applied Terraform at least once for that workspace first.
 
 ### 6. Run the app
 
