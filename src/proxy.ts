@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server"
-import type { NextRequest } from "next/server"
 
-export function middleware(request: NextRequest) {
+export function proxy() {
   // Add any middleware logic here
   // For example, you could redirect unauthenticated users
   // or add headers to the response
@@ -10,7 +9,7 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // Add paths that should be protected by the middleware
+    // Add paths that should be protected by the proxy
     // '/dashboard/:path*',
   ],
 }
