@@ -35,8 +35,8 @@ export function DashboardClient() {
         </div>
         <div className="space-y-2">
           <p className="text-sm">
-            This is a starter dashboard. You can extend it with Firebase
-            Firestore, Storage, and other services.
+            Open your profile to try Firestore document CRUD and Storage avatar
+            uploads.
           </p>
           <Link href={ROUTES.AUTH.PROFILE}>
             <Button variant="outline" className="w-full">

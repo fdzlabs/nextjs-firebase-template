@@ -1,10 +1,10 @@
 'use client'
 
 import type React from 'react'
-
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from './auth-provider'
+import { isConfigured } from '@/lib/firebase-env'
 import { ROUTES } from '@/constants/routes'
 
 export default function ProtectedRoute({
@@ -18,12 +18,17 @@ export default function ProtectedRoute({
   const router = useRouter()
 
   useEffect(() => {
+    if (!isConfigured) {
+      router.replace(ROUTES.SETUP)
+      return
+    }
+
     if (!loading && !user) {
       router.push(ROUTES.AUTH.SIGNIN)
     }
   }, [user, loading, router])
 
-  if (loading) {
+  if (!isConfigured || loading) {
     return (
       <>
         {skeleton ?? (

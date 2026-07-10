@@ -10,6 +10,7 @@ import {
 } from 'firebase/auth'
 import { getErrorMessage } from '@/lib/firebase-error'
 import { useAuth } from '@/components/auth-provider'
+import { FirestoreProfileCard } from '@/components/profile/firestore-profile-card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -215,6 +216,12 @@ export function ProfileForms() {
           </button>
         </Alert>
       )}
+
+      <FirestoreProfileCard
+        user={user}
+        onMessage={setMessage}
+        onError={setError}
+      />
 
       <Card>
         <CardHeader>

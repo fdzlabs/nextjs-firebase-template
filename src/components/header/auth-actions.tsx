@@ -19,23 +19,11 @@ import {
 import { Skeleton } from '@/components/ui/skeleton'
 import { ROUTES } from '@/constants/routes'
 import { auth } from '@/lib/firebase'
-
-function isFirebaseConfigured() {
-  return !!(
-    process.env.NEXT_PUBLIC_FIREBASE_API_KEY &&
-    process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN &&
-    process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID &&
-    process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET &&
-    process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID &&
-    process.env.NEXT_PUBLIC_FIREBASE_APP_ID &&
-    process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== 'demo-api-key'
-  )
-}
+import { isConfigured } from '@/lib/firebase-env'
 
 export function HeaderAuthActions() {
   const { user, loading } = useAuth()
   const router = useRouter()
-  const isConfigured = isFirebaseConfigured()
 
   const getUserInitials = (email: string | null | undefined) => {
     if (!email) return 'U'

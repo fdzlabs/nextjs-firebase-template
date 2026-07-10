@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/card'
 import { Shield, Database, Zap, Lock, Users, Cloud } from 'lucide-react'
 import { ROUTES } from '@/constants/routes'
+import { isConfigured } from '@/lib/firebase-env'
 
 export const metadata: Metadata = {
   title: 'Next.js Firebase Template - Production Ready Starter',
@@ -55,23 +56,6 @@ export const metadata: Metadata = {
   },
 }
 
-// Esta función verifica la configuración en el servidor
-function isFirebaseConfigured() {
-  const requiredVars = [
-    'NEXT_PUBLIC_FIREBASE_API_KEY',
-    'NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN',
-    'NEXT_PUBLIC_FIREBASE_PROJECT_ID',
-    'NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET',
-    'NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID',
-    'NEXT_PUBLIC_FIREBASE_APP_ID',
-  ]
-
-  return requiredVars.every(
-    (varName) =>
-      process.env[varName] && process.env[varName] !== 'demo-api-key',
-  )
-}
-
 const features = [
   {
     icon: Shield,
@@ -112,7 +96,7 @@ const features = [
 ]
 
 export default function Home() {
-  const configured = isFirebaseConfigured()
+  const configured = isConfigured
 
   return (
     <main className="min-h-screen">
