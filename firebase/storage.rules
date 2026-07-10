@@ -1,0 +1,37 @@
+rules_version = '2';
+
+// Example Cloud Storage security rules for this template.
+// Matches avatar uploads in `src/lib/user-profile.ts`
+// (path: `avatars/{uid}/avatar.*`).
+//
+// Deploy:
+//   firebase deploy --only storage
+// Or paste into Firebase Console → Storage → Rules.
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    function isImage() {
+      return request.resource != null
+        && request.resource.contentType.matches('image/.*')
+        && request.resource.size < 5 * 1024 * 1024;
+    }
+
+    match /avatars/{userId}/{fileName} {
+      allow read: if isOwner(userId);
+      allow write: if isOwner(userId) && isImage();
+      allow delete: if isOwner(userId);
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

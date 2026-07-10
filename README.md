@@ -10,7 +10,7 @@ A production-ready template for shipping web apps quickly. It pairs **Next.js (A
 ## Overview
 
 - **Frontend:** [Next.js 16](https://nextjs.org/) (App Router), [Tailwind CSS](https://tailwindcss.com/), [shadcn/ui](https://ui.shadcn.com/), TypeScript.
-- **Backend:** Firebase Auth (Email/Password, optional Google), Firestore, Storage.
+- **Backend:** Firebase Auth (Email/Password, optional Google), Firestore, Storage; server session cookies via Firebase Admin.
 - **Infrastructure:** Terraform in `infra/` provisions the Firebase project and optional Vercel project; a sync script writes Terraform outputs into `.env.local` so the app runs without manual key copying.
 - **Environments:** Multi-environment (e.g. dev and prod) by default via Terraform workspaces and per-environment variable files—see [Managing Stages](docs/stages.md).
 
@@ -121,20 +121,42 @@ Full steps and the exact env vars are in the [Manual Setup Guide](docs/setup-man
 - **Manual (Console):** [Manual Setup Guide](docs/setup-manual.md).
 - **Vercel + Git:** [Vercel Integration](docs/vercel-integration.md).
 - **Multiple environments:** [Managing Stages](docs/stages.md).
+- **Security rules:** [Firestore & Storage rules](docs/security-rules.md).
 
 ## Project structure
 
 ```
 ├── docs/               # Setup guides and documentation
+├── firebase/           # Example Firestore & Storage security rules
 ├── infra/              # Terraform (Firebase, optional Vercel)
 ├── src/
-│   ├── app/            # Next.js App Router pages
+│   ├── app/            # Next.js App Router pages (+ api/auth/session)
 │   ├── components/     # React components (shadcn/ui)
-│   ├── lib/            # Firebase config & utilities
+│   ├── lib/            # Firebase client/admin helpers
+│   ├── proxy.ts        # Next 16 auth gate (session cookie verify)
 │   └── hooks/          # Custom React hooks
 ├── public/             # Static assets
 └── ...config files
 ```
+
+## Auth and session cookies
+
+Protected routes (`/dashboard`, `/auth/profile`, `/subscription`) are gated by `src/proxy.ts`, which verifies an httpOnly `__session` cookie with Firebase Admin.
+
+1. Client signs in with the Firebase JS SDK.
+2. The app POSTs the ID token to `/api/auth/session`, which calls Admin `createSessionCookie` and sets `__session`.
+3. Sign-out DELETEs `/api/auth/session` (clears the cookie; best-effort refresh-token revoke).
+4. `ProtectedRoute` remains only as a soft loading/UX fallback.
+
+**Admin credentials** (server-only — never commit secrets) are documented in [`.env.example`](.env.example) and [Manual Setup](docs/setup-manual.md#7-firebase-admin-session-cookies--route-protection). Strategies:
+
+| Strategy                    | Env vars                                                                                 |
+| :-------------------------- | :--------------------------------------------------------------------------------------- |
+| JSON blob (Vercel-friendly) | `FIREBASE_SERVICE_ACCOUNT`                                                               |
+| Discrete fields             | `FIREBASE_ADMIN_PROJECT_ID`, `FIREBASE_ADMIN_CLIENT_EMAIL`, `FIREBASE_ADMIN_PRIVATE_KEY` |
+| ADC / key file              | `GOOGLE_APPLICATION_CREDENTIALS` or `FIREBASE_ADMIN_USE_ADC=true`                        |
+
+Without Admin env in **local/dev**, the proxy skips cryptographic verification so the template still runs; **production** requires Admin and fails closed. Example Firestore/Storage rules: [Security Rules](docs/security-rules.md).
 
 ## Notes
 

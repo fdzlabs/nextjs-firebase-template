@@ -60,15 +60,15 @@ billing_account = "000000-000000-000000"    # Required for automated project cre
 ```
 
 > **Important**: `project_id` must be:
+>
 > 1.  **Globally unique** across all Google Cloud customers.
 > 2.  **At most 30 characters long**.
-> We recommend appending random numbers (e.g., `my-app-9876`) but keeping it short.
+>     We recommend appending random numbers (e.g., `my-app-9876`) but keeping it short.
 
 > **Note on Environments**: If you plan to use multiple stages (dev/prod), we recommend creating separate variable files (e.g., `dev.tfvars`, `prod.tfvars`) instead of a single `terraform.tfvars`. See [Managing Stages](./stages.md).
 
 > See [Google Cloud Locations](https://cloud.google.com/about/locations) for a list of available regions.
 > You can find your Billing Account ID in the [Google Cloud Billing Console](https://console.cloud.google.com/billing).
-
 
 ### Optional: Google Sign-In
 
@@ -146,6 +146,10 @@ pnpm sync-env
 ```
 
 This reads Terraform outputs and creates or updates `.env.local` with your Firebase configuration keys. Alternatively, you can run `node infra/sync-env.cjs` from the repo root.
+
+### Firebase Admin (session cookies)
+
+`pnpm sync-env` only writes the public client keys. For server-side session cookies and proxy verification, also add Admin credentials to `.env.local` (and to Vercel env for production). See [Manual Setup §7](./setup-manual.md#7-firebase-admin-session-cookies--route-protection) and [`.env.example`](../.env.example).
 
 ## Troubleshooting
 

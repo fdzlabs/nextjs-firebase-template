@@ -59,3 +59,45 @@ NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
 ```
 
 If you lost the config values, you can find them again in **Project Settings** (Gear icon) > **General** > **Your apps** > **SDK setup and configuration** > **Config**.
+
+A complete template (including optional Admin vars) is in [`.env.example`](../.env.example).
+
+### 7. Firebase Admin (session cookies + route protection)
+
+Server-side auth uses the Firebase Admin SDK to mint and verify an httpOnly `__session` cookie. Without Admin credentials:
+
+- **Local/dev:** the Next.js proxy skips cryptographic verification so client-only demos still work.
+- **Production:** protected routes are denied until Admin is configured.
+
+**Create a service account**
+
+1. Firebase Console → **Project Settings** → **Service accounts**.
+2. Click **Generate new private key** and download the JSON (never commit it).
+
+**Configure env (pick one)**
+
+Option A — single JSON string (convenient on Vercel):
+
+```env
+FIREBASE_SERVICE_ACCOUNT={"type":"service_account","project_id":"...","private_key":"-----BEGIN PRIVATE KEY-----\\n...\\n-----END PRIVATE KEY-----\\n","client_email":"..."}
+```
+
+Option B — discrete fields:
+
+```env
+FIREBASE_ADMIN_PROJECT_ID=your_project_id
+FIREBASE_ADMIN_CLIENT_EMAIL=firebase-adminsdk-xxxxx@your_project_id.iam.gserviceaccount.com
+FIREBASE_ADMIN_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
+```
+
+Option C — Application Default Credentials locally:
+
+```env
+GOOGLE_APPLICATION_CREDENTIALS=/absolute/path/to/service-account.json
+FIREBASE_ADMIN_USE_ADC=true
+FIREBASE_ADMIN_PROJECT_ID=your_project_id
+```
+
+### 8. Security rules
+
+Replace Firestore/Storage “test mode” rules before production. Example rules matching this template’s profile demo are in [`firebase/`](../firebase/) — see [Security Rules](security-rules.md).

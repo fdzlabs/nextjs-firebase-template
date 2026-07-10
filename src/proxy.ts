@@ -2,9 +2,11 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 import { ROUTES } from '@/constants/routes'
-
-/** Conventional Firebase session cookie name (set by session APIs in auth-and-security). */
-const SESSION_COOKIE = '__session'
+import {
+  getAdminAuth,
+  isFirebaseAdminConfigured,
+  SESSION_COOKIE_NAME,
+} from '@/lib/firebase-admin'
 
 const PROTECTED_PREFIXES = [
   ROUTES.DASHBOARD,
@@ -18,23 +20,66 @@ function isProtectedPath(pathname: string): boolean {
   )
 }
 
-export function proxy(request: NextRequest) {
+function redirectToSignIn(request: NextRequest, clearCookie = false) {
+  const loginUrl = new URL(ROUTES.AUTH.SIGNIN, request.url)
+  loginUrl.searchParams.set('next', request.nextUrl.pathname)
+  const response = NextResponse.redirect(loginUrl)
+
+  if (clearCookie) {
+    response.cookies.set({
+      name: SESSION_COOKIE_NAME,
+      value: '',
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 0,
+    })
+  }
+
+  return response
+}
+
+/**
+ * Next.js 16 proxy (Node runtime). Primary gate for protected routes.
+ *
+ * - Production: requires Firebase Admin and verifies `__session` cryptographically.
+ * - Local/dev without Admin: skips server verification (client `ProtectedRoute` is the UX fallback).
+ *   Documented in README / setup docs — do not rely on this for production.
+ */
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   if (!isProtectedPath(pathname)) {
     return NextResponse.next()
   }
 
-  // Cookie-presence gate only. Token verification lands with auth-and-security work
-  // (firebase-admin session create/revoke). Do not treat this as cryptographic auth.
-  const session = request.cookies.get(SESSION_COOKIE)
-  if (!session?.value) {
-    const loginUrl = new URL(ROUTES.AUTH.SIGNIN, request.url)
-    loginUrl.searchParams.set('next', pathname)
-    return NextResponse.redirect(loginUrl)
+  const session = request.cookies.get(SESSION_COOKIE_NAME)?.value
+
+  if (!isFirebaseAdminConfigured()) {
+    if (process.env.NODE_ENV === 'production') {
+      console.error(
+        '[proxy] Firebase Admin is not configured in production; denying protected route.',
+      )
+      return redirectToSignIn(request)
+    }
+
+    // Dev/template mode: no Admin credentials — skip cryptographic verify.
+    // Presence check only when a cookie exists; otherwise allow through so
+    // client-side auth demos still work without a service account.
+    return NextResponse.next()
   }
 
-  return NextResponse.next()
+  if (!session) {
+    return redirectToSignIn(request)
+  }
+
+  try {
+    await getAdminAuth().verifySessionCookie(session, true)
+    return NextResponse.next()
+  } catch {
+    return redirectToSignIn(request, true)
+  }
 }
 
 export const config = {

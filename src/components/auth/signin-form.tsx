@@ -9,6 +9,7 @@ import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth'
 
 import { auth, googleProvider } from '@/lib/firebase'
 import { getErrorMessage } from '@/lib/firebase-error'
+import { establishSessionFromUser } from '@/lib/session-client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -29,7 +30,8 @@ export function SignInForm() {
     setLoading(true)
 
     try {
-      await signInWithEmailAndPassword(auth, email, password)
+      const credential = await signInWithEmailAndPassword(auth, email, password)
+      await establishSessionFromUser(credential.user)
       router.push(ROUTES.DASHBOARD)
     } catch (error: unknown) {
       setError(getErrorMessage(error, 'Failed to sign in'))
@@ -43,7 +45,8 @@ export function SignInForm() {
     setLoading(true)
 
     try {
-      await signInWithPopup(auth, googleProvider)
+      const credential = await signInWithPopup(auth, googleProvider)
+      await establishSessionFromUser(credential.user)
       router.push(ROUTES.DASHBOARD)
     } catch (error: unknown) {
       setError(getErrorMessage(error, 'Failed to sign in with Google'))
