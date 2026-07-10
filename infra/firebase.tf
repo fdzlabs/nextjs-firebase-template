@@ -4,6 +4,8 @@ resource "google_project" "default" {
   name            = var.project_name
   billing_account = var.billing_account
   org_id          = var.org_id != "" ? var.org_id : null
+  # Provider 6.x defaults to PREVENT; keep DELETE so template teardown still works.
+  deletion_policy = "DELETE"
 }
 
 # Enables required APIs
@@ -122,6 +124,8 @@ resource "google_firestore_database" "default" {
   type                        = "FIRESTORE_NATIVE"
   concurrency_mode            = "OPTIMISTIC"
   app_engine_integration_mode = "DISABLED"
+  # Provider 6.x defaults to ABANDON; DELETE keeps template teardown working.
+  deletion_policy             = "DELETE"
 
   depends_on = [google_project_service.firestore]
 }
