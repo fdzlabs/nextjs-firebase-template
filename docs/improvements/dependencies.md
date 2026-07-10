@@ -13,6 +13,7 @@ While the core frameworks (Next.js, React, Firebase, Tailwind) are up to date, s
 | Zod 4 | **Deferred** | No app schemas yet; `@hookform/resolvers` would need a major bump (3 → 5). Stay on Zod 3 until forms adopt Zod. |
 | Recharts 3 | **Deferred** | Only used by shadcn `chart.tsx`; Recharts 3 migration guide is breaking. Stay on 2.15.4. |
 | Next / React / Firebase majors | **Skipped** | Out of scope for this refresh. |
+| `pnpm-workspace.yaml` / `unrs-resolver` | **Unchanged here** | Build allowlists already landed on main via the DX tooling PR; this refresh does not modify `pnpm-workspace.yaml`. |
 
 ## Acceptance Criteria
 
