@@ -39,7 +39,9 @@ export function HeaderAuthActions() {
 
   const handleSignOut = async () => {
     try {
-      await clearSessionCookie()
+      await clearSessionCookie().catch((error) => {
+        console.error('Failed to clear session cookie:', error)
+      })
       await signOut(auth)
       router.push(ROUTES.HOME)
     } catch (error) {

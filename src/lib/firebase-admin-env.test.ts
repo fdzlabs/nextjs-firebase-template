@@ -33,6 +33,14 @@ describe('resolveAdminCredentialSource', () => {
     ).toEqual({ kind: 'adc' })
   })
 
+  it('uses ADC when FIREBASE_ADMIN_USE_ADC is true', () => {
+    expect(
+      resolveAdminCredentialSource({
+        FIREBASE_ADMIN_USE_ADC: 'true',
+      }),
+    ).toEqual({ kind: 'adc' })
+  })
+
   it('returns none when unset', () => {
     expect(resolveAdminCredentialSource({})).toEqual({ kind: 'none' })
   })
