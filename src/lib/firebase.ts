@@ -2,11 +2,7 @@ import { initializeApp, getApps, getApp } from 'firebase/app'
 import { getAuth, GoogleAuthProvider } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
 import { getStorage } from 'firebase/storage'
-import {
-  firebaseEnv,
-  isConfigured,
-  missingFirebaseEnvVars,
-} from '@/lib/firebase-env'
+import { firebaseEnv, missingFirebaseEnvVars } from '@/lib/firebase-env'
 
 if (missingFirebaseEnvVars.length > 0) {
   console.error(
@@ -43,4 +39,4 @@ googleProvider.setCustomParameters({
   prompt: 'select_account',
 })
 
-export { app, auth, db, storage, googleProvider, isConfigured }
+export { app, auth, db, storage, googleProvider }

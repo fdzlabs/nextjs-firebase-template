@@ -209,7 +209,7 @@ export function FirestoreProfileCard({
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
               placeholder="Jane Doe"
-              disabled={loadingProfile || saving}
+              disabled={loadingProfile || saving || uploading}
             />
           </div>
           <div className="space-y-2">
@@ -220,7 +220,7 @@ export function FirestoreProfileCard({
               onChange={(e) => setBio(e.target.value)}
               placeholder="A short bio stored in Firestore…"
               rows={3}
-              disabled={loadingProfile || saving}
+              disabled={loadingProfile || saving || uploading}
             />
           </div>
           <Button
