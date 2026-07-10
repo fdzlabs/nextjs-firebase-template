@@ -36,6 +36,7 @@ export function SignInForm() {
         setError(
           `Signed in, but the server session could not be established: ${session.message}`,
         )
+        return
       }
       router.push(ROUTES.DASHBOARD)
     } catch (error: unknown) {
@@ -56,6 +57,7 @@ export function SignInForm() {
         setError(
           `Signed in, but the server session could not be established: ${session.message}`,
         )
+        return
       }
       router.push(ROUTES.DASHBOARD)
     } catch (error: unknown) {

@@ -46,6 +46,7 @@ export function SignUpForm() {
         setError(
           `Account created, but the server session could not be established: ${session.message}`,
         )
+        return
       }
       router.push(ROUTES.DASHBOARD)
     } catch (error: unknown) {
@@ -66,6 +67,7 @@ export function SignUpForm() {
         setError(
           `Signed in, but the server session could not be established: ${session.message}`,
         )
+        return
       }
       router.push(ROUTES.DASHBOARD)
     } catch (error: unknown) {

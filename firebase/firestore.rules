@@ -18,15 +18,29 @@ service cloud.firestore {
       return isSignedIn() && request.auth.uid == uid;
     }
 
+    // Allowed profile shape from `src/lib/user-profile.ts` (no arbitrary extras).
+    function isValidProfileKeys() {
+      return request.resource.data.keys().hasOnly([
+        'uid',
+        'displayName',
+        'bio',
+        'photoURL',
+        'email',
+        'createdAt',
+        'updatedAt',
+      ])
+        && request.resource.data.keys().hasAll(['uid', 'displayName', 'bio']);
+    }
+
     // User-owned profile documents
     match /users/{userId} {
       allow read: if isOwner(userId);
       allow create: if isOwner(userId)
         && request.resource.data.uid == userId
-        && request.resource.data.keys().hasAll(['uid', 'displayName', 'bio']);
+        && isValidProfileKeys();
       allow update: if isOwner(userId)
         && request.resource.data.uid == userId
-        && request.resource.data.keys().hasAll(['uid', 'displayName', 'bio']);
+        && isValidProfileKeys();
       allow delete: if isOwner(userId);
     }
 

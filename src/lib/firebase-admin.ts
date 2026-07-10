@@ -50,17 +50,35 @@ function buildServiceAccountFromEnv(): ServiceAccount {
 
 let adminApp: App | null = null
 let initError: Error | null = null
+let initErrorAtMs = 0
+
+/** How long to cache ADC init failures before allowing a retry. */
+const ADC_INIT_ERROR_TTL_MS = 30_000
 
 function getAdminApp(): App {
   if (adminApp) return adminApp
-  if (initError) throw initError
+
+  const source = resolveAdminCredentialSource()
+  if (initError) {
+    // Permanent for missing/invalid static config; TTL for ADC (metadata can flap).
+    const isTransientAdc =
+      source.kind === 'adc' &&
+      Date.now() - initErrorAtMs < ADC_INIT_ERROR_TTL_MS
+    const isPermanent =
+      source.kind === 'none' ||
+      source.kind === 'json' ||
+      source.kind === 'discrete'
+    if (isPermanent || isTransientAdc) {
+      throw initError
+    }
+    initError = null
+    initErrorAtMs = 0
+  }
 
   if (getApps().length > 0) {
     adminApp = getApps()[0]!
     return adminApp
   }
-
-  const source = resolveAdminCredentialSource()
 
   try {
     switch (source.kind) {
@@ -87,6 +105,7 @@ function getAdminApp(): App {
           'Firebase Admin is not configured. Set FIREBASE_SERVICE_ACCOUNT, or FIREBASE_ADMIN_PROJECT_ID + FIREBASE_ADMIN_CLIENT_EMAIL + FIREBASE_ADMIN_PRIVATE_KEY, or GOOGLE_APPLICATION_CREDENTIALS / FIREBASE_ADMIN_USE_ADC=true.',
         )
         initError = error
+        initErrorAtMs = Date.now()
         throw error
       }
       default: {
@@ -101,6 +120,7 @@ function getAdminApp(): App {
       error instanceof Error
         ? error
         : new Error('Failed to initialize Firebase Admin')
+    initErrorAtMs = Date.now()
     throw initError
   }
 
