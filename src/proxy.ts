@@ -75,7 +75,10 @@ export async function proxy(request: NextRequest) {
   }
 
   try {
-    await getAdminAuth().verifySessionCookie(session, true)
+    // Stateless JWT verify (cached public keys). Avoid checkRevoked=true here —
+    // that forces a Firebase Auth round-trip on every protected navigation.
+    // Revocation is handled on sign-out via DELETE /api/auth/session.
+    await getAdminAuth().verifySessionCookie(session)
     return NextResponse.next()
   } catch {
     return redirectToSignIn(request, true)

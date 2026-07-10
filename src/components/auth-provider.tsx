@@ -7,7 +7,7 @@ import {
   useState,
   type ReactNode,
 } from 'react'
-import { onAuthStateChanged, type User } from 'firebase/auth'
+import { onIdTokenChanged, type User } from 'firebase/auth'
 import { auth } from '@/lib/firebase'
 import { createSessionCookie } from '@/lib/session-client'
 
@@ -28,11 +28,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (nextUser) => {
+    // onIdTokenChanged also fires on hourly ID token refresh, so we can roll
+    // the httpOnly session cookie — unlike onAuthStateChanged alone.
+    const unsubscribe = onIdTokenChanged(auth, (nextUser) => {
       setUser(nextUser)
       setLoading(false)
 
-      // Refresh the httpOnly session cookie when client auth is restored.
       // Do not clear the cookie here on null — that races with initial load;
       // explicit sign-out calls clearSessionCookie.
       if (nextUser) {
