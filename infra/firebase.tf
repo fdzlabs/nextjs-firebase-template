@@ -4,6 +4,8 @@ resource "google_project" "default" {
   name            = var.project_name
   billing_account = var.billing_account
   org_id          = var.org_id != "" ? var.org_id : null
+  # Provider 6.x defaults to PREVENT; keep DELETE so template teardown still works.
+  deletion_policy = "DELETE"
 }
 
 # Enables required APIs
