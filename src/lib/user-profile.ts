@@ -5,31 +5,31 @@ import {
   updateDoc,
   serverTimestamp,
   type Timestamp,
-} from 'firebase/firestore';
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { db, storage } from '@/lib/firebase';
+} from 'firebase/firestore'
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
+import { db, storage } from '@/lib/firebase'
 
-export const USERS_COLLECTION = 'users';
+export const USERS_COLLECTION = 'users'
 
 export interface UserProfile {
-  uid: string;
-  displayName: string;
-  bio: string;
-  photoURL: string | null;
-  email: string | null;
-  createdAt?: Timestamp | null;
-  updatedAt?: Timestamp | null;
+  uid: string
+  displayName: string
+  bio: string
+  photoURL: string | null
+  email: string | null
+  createdAt?: Timestamp | null
+  updatedAt?: Timestamp | null
 }
 
 export type UserProfileInput = {
-  displayName: string;
-  bio: string;
-  photoURL?: string | null;
-  email?: string | null;
-};
+  displayName: string
+  bio: string
+  photoURL?: string | null
+  email?: string | null
+}
 
 function userDocRef(uid: string) {
-  return doc(db, USERS_COLLECTION, uid);
+  return doc(db, USERS_COLLECTION, uid)
 }
 
 function isNotFoundError(error: unknown): boolean {
@@ -38,14 +38,14 @@ function isNotFoundError(error: unknown): boolean {
     error !== null &&
     'code' in error &&
     (error as { code: string }).code === 'not-found'
-  );
+  )
 }
 
 /** Read the signed-in user's Firestore profile document. */
 export async function getUserProfile(uid: string): Promise<UserProfile | null> {
-  const snapshot = await getDoc(userDocRef(uid));
-  if (!snapshot.exists()) return null;
-  return snapshot.data() as UserProfile;
+  const snapshot = await getDoc(userDocRef(uid))
+  if (!snapshot.exists()) return null
+  return snapshot.data() as UserProfile
 }
 
 /**
@@ -57,7 +57,7 @@ export async function saveUserProfile(
   uid: string,
   data: UserProfileInput,
 ): Promise<void> {
-  const profileRef = userDocRef(uid);
+  const profileRef = userDocRef(uid)
   const payload = {
     uid,
     displayName: data.displayName,
@@ -65,13 +65,13 @@ export async function saveUserProfile(
     photoURL: data.photoURL ?? null,
     email: data.email ?? null,
     updatedAt: serverTimestamp(),
-  };
+  }
 
   try {
-    await updateDoc(profileRef, payload);
+    await updateDoc(profileRef, payload)
   } catch (error: unknown) {
-    if (!isNotFoundError(error)) throw error;
-    await setDoc(profileRef, { ...payload, createdAt: serverTimestamp() });
+    if (!isNotFoundError(error)) throw error
+    await setDoc(profileRef, { ...payload, createdAt: serverTimestamp() })
   }
 }
 
@@ -80,8 +80,8 @@ export async function uploadUserAvatar(
   uid: string,
   file: File,
 ): Promise<string> {
-  const extension = file.name.split('.').pop()?.toLowerCase() || 'jpg';
-  const objectRef = ref(storage, `avatars/${uid}/avatar.${extension}`);
-  await uploadBytes(objectRef, file, { contentType: file.type });
-  return getDownloadURL(objectRef);
+  const extension = file.name.split('.').pop()?.toLowerCase() || 'jpg'
+  const objectRef = ref(storage, `avatars/${uid}/avatar.${extension}`)
+  await uploadBytes(objectRef, file, { contentType: file.type })
+  return getDownloadURL(objectRef)
 }
