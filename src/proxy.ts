@@ -80,8 +80,29 @@ export async function proxy(request: NextRequest) {
     // Revocation is handled on sign-out via DELETE /api/auth/session.
     await getAdminAuth().verifySessionCookie(session)
     return NextResponse.next()
-  } catch {
-    return redirectToSignIn(request, true)
+  } catch (error: unknown) {
+    // Only clear the cookie for known invalid/expired session auth errors.
+    // Transient failures (e.g. public-key fetch) should redirect without wiping
+    // a potentially still-valid cookie.
+    const code =
+      typeof error === 'object' &&
+      error !== null &&
+      'code' in error &&
+      typeof (error as { code: unknown }).code === 'string'
+        ? (error as { code: string }).code
+        : undefined
+
+    const clearCookie =
+      code === 'auth/session-cookie-expired' ||
+      code === 'auth/session-cookie-revoked' ||
+      code === 'auth/invalid-session-cookie' ||
+      code === 'auth/argument-error'
+
+    if (!clearCookie) {
+      console.error('[proxy] Session verify failed (cookie preserved):', error)
+    }
+
+    return redirectToSignIn(request, clearCookie)
   }
 }
 

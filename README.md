@@ -125,7 +125,7 @@ Full steps and the exact env vars are in the [Manual Setup Guide](docs/setup-man
 
 ## Project structure
 
-```
+```text
 ├── docs/               # Setup guides and documentation
 ├── firebase/           # Example Firestore & Storage security rules
 ├── infra/              # Terraform (Firebase, optional Vercel)

@@ -1,28 +1,15 @@
 # Auth and Security Hardening
 
-The current template relies entirely on client-side Firebase Authentication (`AuthProvider` + `onAuthStateChanged`). This leads to a suboptimal user experience (flashes of content before redirecting) and weaker security boundaries (no server-enforced route protection).
+> **Status:** Implemented on `feat/auth-and-security` (merged into the template once the PR lands). App Check remains a follow-up.
 
-## Target Architecture
+The template combines Firebase client authentication with **server-enforced session-cookie verification** via Firebase Admin and `src/proxy.ts`. `ProtectedRoute` is only a soft UX/loading fallback.
 
-Migrate to server-enforced authentication using session cookies or Firebase ID token verification at the edge/server level.
+## Implemented Architecture
 
-## Implementation Steps
-
-1. **Add Firebase Admin SDK**
-   - Install `firebase-admin`.
-   - Configure a service account securely using environment variables.
-
-2. **Implement Server-Side Session Management**
-   - Create route handlers (e.g., `src/app/api/auth/session/route.ts`) to manage session cookies or verify ID tokens on login/logout.
-
-3. **Wire Next.js Proxy (Middleware)**
-   - Update `src/proxy.ts` (Next.js middleware) to verify the session or token.
-   - Set up the `proxyConfig.matcher` to protect authenticated routes like `/dashboard`.
-   - Remove the client-only `ProtectedRoute` wrapper as the primary security gate.
-
-4. **Security Rules & App Check (Optional but Recommended)**
-   - Introduce Firebase App Check (using reCAPTCHA Enterprise or debug tokens for local dev).
-   - Provide example Firestore and Storage security rules in the repository to replace default open rules.
+1. **Firebase Admin SDK** — `src/lib/firebase-admin.ts` initializes from `FIREBASE_SERVICE_ACCOUNT`, discrete `FIREBASE_ADMIN_*` vars, or ADC.
+2. **Session management** — `POST`/`DELETE` `src/app/api/auth/session` mint and clear the httpOnly `__session` cookie (`createSessionCookie` / revoke on logout).
+3. **Next.js proxy** — `src/proxy.ts` verifies `__session` on protected matchers (`/dashboard`, `/auth/profile`, `/subscription`). Production fails closed without Admin; local/dev without Admin skips cryptographic verify (documented).
+4. **Security rules** — Example Firestore and Storage rules live under `firebase/`. See [Security Rules](../security-rules.md).
 
 ## Acceptance Criteria
 

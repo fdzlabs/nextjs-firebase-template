@@ -25,7 +25,8 @@ service cloud.firestore {
         && request.resource.data.uid == userId
         && request.resource.data.keys().hasAll(['uid', 'displayName', 'bio']);
       allow update: if isOwner(userId)
-        && request.resource.data.uid == userId;
+        && request.resource.data.uid == userId
+        && request.resource.data.keys().hasAll(['uid', 'displayName', 'bio']);
       allow delete: if isOwner(userId);
     }
 

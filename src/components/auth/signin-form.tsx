@@ -31,7 +31,12 @@ export function SignInForm() {
 
     try {
       const credential = await signInWithEmailAndPassword(auth, email, password)
-      await establishSessionFromUser(credential.user)
+      const session = await establishSessionFromUser(credential.user)
+      if (session.status === 'failed') {
+        setError(
+          `Signed in, but the server session could not be established: ${session.message}`,
+        )
+      }
       router.push(ROUTES.DASHBOARD)
     } catch (error: unknown) {
       setError(getErrorMessage(error, 'Failed to sign in'))
@@ -46,7 +51,12 @@ export function SignInForm() {
 
     try {
       const credential = await signInWithPopup(auth, googleProvider)
-      await establishSessionFromUser(credential.user)
+      const session = await establishSessionFromUser(credential.user)
+      if (session.status === 'failed') {
+        setError(
+          `Signed in, but the server session could not be established: ${session.message}`,
+        )
+      }
       router.push(ROUTES.DASHBOARD)
     } catch (error: unknown) {
       setError(getErrorMessage(error, 'Failed to sign in with Google'))

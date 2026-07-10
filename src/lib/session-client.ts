@@ -6,6 +6,11 @@
 export type SessionApiResult =
   { ok: true } | { ok: false; status: number; code?: string; message: string }
 
+export type EstablishSessionResult =
+  | { status: 'ok' }
+  | { status: 'skipped'; reason: 'ADMIN_NOT_CONFIGURED' }
+  | { status: 'failed'; message: string }
+
 async function parseSessionResponse(
   response: Response,
 ): Promise<SessionApiResult> {
@@ -52,22 +57,34 @@ export async function clearSessionCookie(): Promise<SessionApiResult> {
 
 /**
  * After a successful client sign-in, mint a session cookie before navigating
- * to a protected route. Soft-fails when Admin is not configured in local/dev.
+ * to a protected route.
+ *
+ * Never throws for session API failures — Firebase client auth may already have
+ * succeeded; callers should treat `failed` as a session warning, not a sign-in error.
+ * Soft-skips when Admin is not configured in local/dev.
  */
 export async function establishSessionFromUser(user: {
   getIdToken: (forceRefresh?: boolean) => Promise<string>
-}): Promise<void> {
-  const idToken = await user.getIdToken()
-  const result = await createSessionCookie(idToken)
+}): Promise<EstablishSessionResult> {
+  try {
+    const idToken = await user.getIdToken()
+    const result = await createSessionCookie(idToken)
 
-  if (result.ok) return
+    if (result.ok) return { status: 'ok' }
 
-  if (result.code === 'ADMIN_NOT_CONFIGURED') {
-    console.warn(
-      '[auth] Firebase Admin is not configured; skipping session cookie. Protected routes rely on client auth until Admin env is set.',
-    )
-    return
+    if (result.code === 'ADMIN_NOT_CONFIGURED') {
+      console.warn(
+        '[auth] Firebase Admin is not configured; skipping session cookie. Protected routes rely on client auth until Admin env is set.',
+      )
+      return { status: 'skipped', reason: 'ADMIN_NOT_CONFIGURED' }
+    }
+
+    console.warn('[auth] Failed to establish session cookie:', result.message)
+    return { status: 'failed', message: result.message }
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : 'Failed to establish session'
+    console.warn('[auth] Failed to establish session cookie:', error)
+    return { status: 'failed', message }
   }
-
-  throw new Error(result.message)
 }
