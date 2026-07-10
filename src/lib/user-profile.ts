@@ -2,6 +2,7 @@ import {
   doc,
   getDoc,
   setDoc,
+  updateDoc,
   serverTimestamp,
   type Timestamp,
 } from 'firebase/firestore';
@@ -31,6 +32,15 @@ function userDocRef(uid: string) {
   return doc(db, USERS_COLLECTION, uid);
 }
 
+function isNotFoundError(error: unknown): boolean {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    'code' in error &&
+    (error as { code: string }).code === 'not-found'
+  );
+}
+
 /** Read the signed-in user's Firestore profile document. */
 export async function getUserProfile(uid: string): Promise<UserProfile | null> {
   const snapshot = await getDoc(userDocRef(uid));
@@ -40,13 +50,14 @@ export async function getUserProfile(uid: string): Promise<UserProfile | null> {
 
 /**
  * Create or update the user's Firestore profile.
- * Uses merge so avatar uploads and partial edits do not wipe other fields.
+ * Updates in place when the doc exists; creates with `createdAt` only on first write
+ * (no getDoc before every save).
  */
 export async function saveUserProfile(
   uid: string,
   data: UserProfileInput,
 ): Promise<void> {
-  const existing = await getDoc(userDocRef(uid));
+  const profileRef = userDocRef(uid);
   const payload = {
     uid,
     displayName: data.displayName,
@@ -54,10 +65,14 @@ export async function saveUserProfile(
     photoURL: data.photoURL ?? null,
     email: data.email ?? null,
     updatedAt: serverTimestamp(),
-    ...(existing.exists() ? {} : { createdAt: serverTimestamp() }),
   };
 
-  await setDoc(userDocRef(uid), payload, { merge: true });
+  try {
+    await updateDoc(profileRef, payload);
+  } catch (error: unknown) {
+    if (!isNotFoundError(error)) throw error;
+    await setDoc(profileRef, { ...payload, createdAt: serverTimestamp() });
+  }
 }
 
 /** Upload an avatar to Storage and return its public download URL. */

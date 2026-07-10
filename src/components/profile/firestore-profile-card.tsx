@@ -52,6 +52,8 @@ export function FirestoreProfileCard({
 
   useEffect(() => {
     let cancelled = false;
+    const authDisplayName = user.displayName || '';
+    const authPhotoURL = user.photoURL;
 
     async function loadProfile() {
       setLoadingProfile(true);
@@ -60,13 +62,13 @@ export function FirestoreProfileCard({
         if (cancelled) return;
 
         if (profile) {
-          setDisplayName(profile.displayName || user.displayName || '');
+          setDisplayName(profile.displayName || authDisplayName);
           setBio(profile.bio || '');
-          setPhotoURL(profile.photoURL ?? user.photoURL);
+          setPhotoURL(profile.photoURL ?? authPhotoURL);
         } else {
-          setDisplayName(user.displayName || '');
+          setDisplayName(authDisplayName);
           setBio('');
-          setPhotoURL(user.photoURL);
+          setPhotoURL(authPhotoURL);
         }
       } catch (error: unknown) {
         if (!cancelled) {
@@ -85,22 +87,28 @@ export function FirestoreProfileCard({
     return () => {
       cancelled = true;
     };
-  }, [user]);
+  }, [user.uid, user.displayName, user.photoURL]);
 
   const handleSaveProfile = async (e: FormEvent) => {
     e.preventDefault();
     setSaving(true);
 
+    const trimmedDisplayName = displayName.trim();
+    const trimmedBio = bio.trim();
+
     try {
       await saveUserProfile(user.uid, {
-        displayName,
-        bio,
+        displayName: trimmedDisplayName,
+        bio: trimmedBio,
         photoURL,
         email: user.email,
       });
 
-      if (displayName !== user.displayName) {
-        await updateProfile(user, { displayName });
+      setDisplayName(trimmedDisplayName);
+      setBio(trimmedBio);
+
+      if (trimmedDisplayName !== (user.displayName || '')) {
+        await updateProfile(user, { displayName: trimmedDisplayName });
       }
 
       onMessage('Firestore profile saved');
@@ -127,16 +135,21 @@ export function FirestoreProfileCard({
       return;
     }
 
+    const trimmedDisplayName = displayName.trim();
+    const trimmedBio = bio.trim();
+
     setUploading(true);
     try {
       const downloadURL = await uploadUserAvatar(user.uid, file);
       await saveUserProfile(user.uid, {
-        displayName: displayName || user.displayName || '',
-        bio,
+        displayName: trimmedDisplayName || user.displayName || '',
+        bio: trimmedBio,
         photoURL: downloadURL,
         email: user.email,
       });
       await updateProfile(user, { photoURL: downloadURL });
+      setDisplayName(trimmedDisplayName || user.displayName || '');
+      setBio(trimmedBio);
       setPhotoURL(downloadURL);
       onMessage('Avatar uploaded to Firebase Storage');
     } catch (error: unknown) {
