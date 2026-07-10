@@ -1,14 +1,14 @@
-'use client';
+'use client'
 
-import Image from 'next/image';
-import Link from 'next/link';
-import { ROUTES } from '@/constants/routes';
-import { HeaderAuthActions } from '@/components/header/auth-actions';
-import { ThemeToggle } from '@/components/header/theme-toggle';
+import Image from 'next/image'
+import Link from 'next/link'
+import { ROUTES } from '@/constants/routes'
+import { HeaderAuthActions } from '@/components/header/auth-actions'
+import { ThemeToggle } from '@/components/header/theme-toggle'
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
+    <header className="border-border bg-background/95 supports-backdrop-filter:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link href={ROUTES.HOME} className="flex items-center gap-2">
           <Image
@@ -27,5 +27,5 @@ export function Header() {
         </nav>
       </div>
     </header>
-  );
+  )
 }

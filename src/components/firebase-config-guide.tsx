@@ -1,8 +1,8 @@
 export default function FirebaseConfigGuide() {
   return (
-    <div className="space-y-4 p-4 bg-muted rounded-lg">
+    <div className="bg-muted space-y-4 rounded-lg p-4">
       <h3 className="text-lg font-medium">Firebase Configuration Guide</h3>
-      <p className="text-sm text-muted-foreground">
+      <p className="text-muted-foreground text-sm">
         To use this starter, you need to add your Firebase configuration to your
         environment variables.
       </p>
@@ -10,7 +10,7 @@ export default function FirebaseConfigGuide() {
         <p className="text-sm font-medium">
           Add the following to your .env.local file:
         </p>
-        <pre className="p-2 bg-background rounded-md text-xs overflow-x-auto">
+        <pre className="bg-background overflow-x-auto rounded-md p-2 text-xs">
           <code>{`NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
 NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_auth_domain
 NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
@@ -20,9 +20,9 @@ NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
 NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=your_measurement_id`}</code>
         </pre>
       </div>
-      <p className="text-xs text-muted-foreground">
+      <p className="text-muted-foreground text-xs">
         You can find these values in your Firebase project settings.
       </p>
     </div>
-  );
+  )
 }

@@ -1,14 +1,14 @@
-import type { Metadata } from 'next';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import type { Metadata } from 'next'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { Shield, Database, Zap, Lock, Users, Cloud } from 'lucide-react';
-import { ROUTES } from '@/constants/routes';
+} from '@/components/ui/card'
+import { Shield, Database, Zap, Lock, Users, Cloud } from 'lucide-react'
+import { ROUTES } from '@/constants/routes'
 
 export const metadata: Metadata = {
   title: 'Next.js Firebase Template - Production Ready Starter',
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-};
+}
 
 // Esta función verifica la configuración en el servidor
 function isFirebaseConfigured() {
@@ -64,11 +64,12 @@ function isFirebaseConfigured() {
     'NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET',
     'NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID',
     'NEXT_PUBLIC_FIREBASE_APP_ID',
-  ];
+  ]
 
   return requiredVars.every(
-    (varName) => process.env[varName] && process.env[varName] !== 'demo-api-key'
-  );
+    (varName) =>
+      process.env[varName] && process.env[varName] !== 'demo-api-key',
+  )
 }
 
 const features = [
@@ -108,10 +109,10 @@ const features = [
     description:
       'Complete user profile management with protected routes and sessions.',
   },
-];
+]
 
 export default function Home() {
-  const configured = isFirebaseConfigured();
+  const configured = isFirebaseConfigured()
 
   return (
     <main className="min-h-screen">
@@ -121,7 +122,7 @@ export default function Home() {
           <h1 className="text-4xl font-bold tracking-tight text-balance md:text-6xl">
             Start building in seconds
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground text-pretty">
+          <p className="text-muted-foreground mx-auto mt-6 max-w-2xl text-lg text-pretty">
             Kickstart your next project with this Firebase starter template.
             Authentication, database, and storage - all pre-configured and ready
             to go.
@@ -142,13 +143,13 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="px-4 py-20 bg-muted/30">
+      <section className="bg-muted/30 px-4 py-20">
         <div className="container mx-auto max-w-6xl">
           <div className="mb-12 text-center">
             <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
               Everything you need to get started
             </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
+            <p className="text-muted-foreground mx-auto mt-4 max-w-2xl">
               This template includes all the essentials for building a modern
               web application with Firebase.
             </p>
@@ -157,8 +158,8 @@ export default function Home() {
             {features.map((feature) => (
               <Card key={feature.title} className="border-border bg-card">
                 <CardHeader>
-                  <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-secondary">
-                    <feature.icon className="h-5 w-5 text-foreground" />
+                  <div className="bg-secondary mb-2 flex h-10 w-10 items-center justify-center rounded-lg">
+                    <feature.icon className="text-foreground h-5 w-5" />
                   </div>
                   <CardTitle className="text-lg">{feature.title}</CardTitle>
                   <CardDescription className="text-muted-foreground">
@@ -198,5 +199,5 @@ export default function Home() {
         </div>
       </section> */}
     </main>
-  );
+  )
 }

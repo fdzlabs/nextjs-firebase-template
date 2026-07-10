@@ -1,5 +1,5 @@
-import Link from 'next/link';
-import Image from 'next/image';
+import Link from 'next/link'
+import Image from 'next/image'
 import {
   Card,
   CardContent,
@@ -7,16 +7,16 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { ResetPasswordForm } from '@/components/auth/reset-password-form';
-import { ROUTES } from '@/constants/routes';
+} from '@/components/ui/card'
+import { ResetPasswordForm } from '@/components/auth/reset-password-form'
+import { ROUTES } from '@/constants/routes'
 
 export default function ResetPassword() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <div className="flex justify-center mb-4">
+          <div className="mb-4 flex justify-center">
             <Image
               src="/firebase-logo.png"
               alt="Firebase Logo"
@@ -34,7 +34,7 @@ export default function ResetPassword() {
           <ResetPasswordForm />
         </CardContent>
         <CardFooter className="flex justify-center">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             Remember your password?{' '}
             <Link
               href={ROUTES.AUTH.SIGNIN}
@@ -46,5 +46,5 @@ export default function ResetPassword() {
         </CardFooter>
       </Card>
     </div>
-  );
+  )
 }

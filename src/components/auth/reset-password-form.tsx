@@ -1,37 +1,38 @@
-'use client';
+'use client'
 
-import type React from 'react';
+import type React from 'react'
 
-import { useState } from 'react';
-import { sendPasswordResetEmail } from 'firebase/auth';
+import { useState } from 'react'
+import { sendPasswordResetEmail } from 'firebase/auth'
 
-import { auth } from '@/lib/firebase';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { auth } from '@/lib/firebase'
+import { getErrorMessage } from '@/lib/firebase-error'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Alert, AlertDescription } from '@/components/ui/alert'
 
 export function ResetPasswordForm() {
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState('')
+  const [message, setMessage] = useState('')
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const handleResetPassword = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    setMessage('');
-    setLoading(true);
+    e.preventDefault()
+    setError('')
+    setMessage('')
+    setLoading(true)
 
     try {
-      await sendPasswordResetEmail(auth, email);
-      setMessage('Check your email for password reset instructions');
-    } catch (error: any) {
-      setError(error.message || 'Failed to reset password');
+      await sendPasswordResetEmail(auth, email)
+      setMessage('Check your email for password reset instructions')
+    } catch (error: unknown) {
+      setError(getErrorMessage(error, 'Failed to reset password'))
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <>
@@ -62,5 +63,5 @@ export function ResetPasswordForm() {
         </Button>
       </form>
     </>
-  );
+  )
 }

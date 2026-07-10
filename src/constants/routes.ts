@@ -19,9 +19,9 @@ export const ROUTES = {
 
   // Protected routes
   DASHBOARD: '/dashboard',
-} as const;
+} as const
 
 // Type helper for route values
 export type Route =
   | (typeof ROUTES)[keyof typeof ROUTES]
-  | (typeof ROUTES.AUTH)[keyof typeof ROUTES.AUTH];
+  | (typeof ROUTES.AUTH)[keyof typeof ROUTES.AUTH]

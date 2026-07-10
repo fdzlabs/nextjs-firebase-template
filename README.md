@@ -18,7 +18,7 @@ A production-ready template for shipping web apps quickly. It pairs **Next.js (A
 
 **Common (all setups)**
 
-- [Node.js](https://nodejs.org/) (v18+)
+- [Node.js](https://nodejs.org/) (v20+)
 - [pnpm](https://pnpm.io/installation)
 
 **Terraform path (recommended)**
@@ -145,4 +145,5 @@ Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for our code o
 This project is licensed under the MIT License—see [LICENSE](LICENSE).
 
 ---
-*Created by [Alexander Fernandez](https://github.com/your-github-username) at [FDZ Labs](https://fdzlabs.com).*
+
+_Created by [Alexander Fernandez](https://github.com/your-github-username) at [FDZ Labs](https://fdzlabs.com)._
