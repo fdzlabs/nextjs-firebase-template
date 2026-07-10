@@ -136,6 +136,10 @@ Full steps and the exact env vars are in the [Manual Setup Guide](docs/setup-man
 └── ...config files
 ```
 
+## Notes
+
+- **Image optimization:** Next.js Image Optimization is enabled. The template allows the `sharp` build script via `pnpm-workspace.yaml` so local `/public` assets are optimized at build time.
+
 ## Contributing
 
 Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for our code of conduct and how to submit pull requests.

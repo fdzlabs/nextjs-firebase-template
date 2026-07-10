@@ -1,6 +1,5 @@
-'use client'
-
 import type React from 'react'
+
 import ProtectedRoute from '@/components/protected-route'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
