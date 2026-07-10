@@ -1,24 +1,24 @@
-'use client';
+'use client'
 
-import Link from 'next/link';
+import Link from 'next/link'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { useAuth } from '@/components/auth-provider';
-import { ROUTES } from '@/constants/routes';
+} from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { useAuth } from '@/components/auth-provider'
+import { ROUTES } from '@/constants/routes'
 
 export default function Dashboard() {
-  const { user } = useAuth();
+  const { user } = useAuth()
 
-  if (!user) return null;
+  if (!user) return null
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-background">
+    <main className="bg-background flex min-h-screen flex-col items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl">Dashboard</CardTitle>
@@ -27,12 +27,12 @@ export default function Dashboard() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="p-4 bg-muted rounded-lg">
+          <div className="bg-muted rounded-lg p-4">
             <p className="font-medium">User Information</p>
-            <p className="text-sm text-muted-foreground mt-1">
+            <p className="text-muted-foreground mt-1 text-sm">
               Email: {user?.email}
             </p>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               User ID: {user?.uid}
             </p>
           </div>
@@ -50,5 +50,5 @@ export default function Dashboard() {
         </CardContent>
       </Card>
     </main>
-  );
+  )
 }

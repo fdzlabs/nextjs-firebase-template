@@ -1,7 +1,7 @@
-import Link from 'next/link';
-import Image from 'next/image';
-import type { Metadata } from 'next';
-import { Button } from '@/components/ui/button';
+import Link from 'next/link'
+import Image from 'next/image'
+import type { Metadata } from 'next'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -9,22 +9,22 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import FirebaseConfigGuide from '@/components/firebase-config-guide';
-import { ROUTES } from '@/constants/routes';
+} from '@/components/ui/card'
+import FirebaseConfigGuide from '@/components/firebase-config-guide'
+import { ROUTES } from '@/constants/routes'
 
 export const metadata: Metadata = {
   title: 'Setup Guide',
   description:
     'Step-by-step guide to set up your Firebase project for this Next.js template',
-};
+}
 
 export default function Setup() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center p-4 bg-background">
+    <div className="bg-background flex min-h-screen flex-col items-center justify-center p-4">
       <Card className="w-full max-w-3xl">
         <CardHeader className="text-center">
-          <div className="flex justify-center mb-4">
+          <div className="mb-4 flex justify-center">
             <Image
               src="/firebase-logo.png"
               alt="Firebase Logo"
@@ -43,7 +43,7 @@ export default function Setup() {
             <h3 className="text-lg font-medium">
               Step 1: Create a Firebase Project
             </h3>
-            <ol className="list-decimal list-inside space-y-2 text-sm">
+            <ol className="list-inside list-decimal space-y-2 text-sm">
               <li>
                 Go to the{' '}
                 <a
@@ -67,7 +67,7 @@ export default function Setup() {
             <h3 className="text-lg font-medium">
               Step 2: Configure Google Authentication
             </h3>
-            <ol className="list-decimal list-inside space-y-2 text-sm">
+            <ol className="list-inside list-decimal space-y-2 text-sm">
               <li>
                 In Firebase Console, go to Authentication → Sign-in method
               </li>
@@ -83,7 +83,7 @@ export default function Setup() {
             <h3 className="text-lg font-medium">
               Step 3: Register Your Web App
             </h3>
-            <ol className="list-decimal list-inside space-y-2 text-sm">
+            <ol className="list-inside list-decimal space-y-2 text-sm">
               <li>
                 In your Firebase project, click the web icon ({'<>'}) to add a
                 web app
@@ -99,16 +99,16 @@ export default function Setup() {
             <h3 className="text-lg font-medium">
               Step 5: Run Your Application
             </h3>
-            <ol className="list-decimal list-inside space-y-2 text-sm">
+            <ol className="list-inside list-decimal space-y-2 text-sm">
               <li>
                 Start your development server with{' '}
-                <code className="bg-muted px-1 py-0.5 rounded">
+                <code className="bg-muted rounded px-1 py-0.5">
                   npm run dev
                 </code>
               </li>
               <li>
                 Visit{' '}
-                <code className="bg-muted px-1 py-0.5 rounded">
+                <code className="bg-muted rounded px-1 py-0.5">
                   http://localhost:3000
                 </code>{' '}
                 to see your app
@@ -126,5 +126,5 @@ export default function Setup() {
         </CardFooter>
       </Card>
     </div>
-  );
+  )
 }

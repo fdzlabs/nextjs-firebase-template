@@ -1,13 +1,13 @@
-'use client';
+'use client'
 
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { CreditCard, LogOut, User } from 'lucide-react';
-import { signOut } from 'firebase/auth';
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { CreditCard, LogOut, User } from 'lucide-react'
+import { signOut } from 'firebase/auth'
 
-import { useAuth } from '@/components/auth-provider';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import { useAuth } from '@/components/auth-provider'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,10 +15,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Skeleton } from '@/components/ui/skeleton';
-import { ROUTES } from '@/constants/routes';
-import { auth } from '@/lib/firebase';
+} from '@/components/ui/dropdown-menu'
+import { Skeleton } from '@/components/ui/skeleton'
+import { ROUTES } from '@/constants/routes'
+import { auth } from '@/lib/firebase'
 
 function isFirebaseConfigured() {
   return !!(
@@ -29,36 +29,36 @@ function isFirebaseConfigured() {
     process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID &&
     process.env.NEXT_PUBLIC_FIREBASE_APP_ID &&
     process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== 'demo-api-key'
-  );
+  )
 }
 
 export function HeaderAuthActions() {
-  const { user, loading } = useAuth();
-  const router = useRouter();
-  const isConfigured = isFirebaseConfigured();
+  const { user, loading } = useAuth()
+  const router = useRouter()
+  const isConfigured = isFirebaseConfigured()
 
   const getUserInitials = (email: string | null | undefined) => {
-    if (!email) return 'U';
-    return email.charAt(0).toUpperCase();
-  };
+    if (!email) return 'U'
+    return email.charAt(0).toUpperCase()
+  }
 
   const getDisplayName = () => {
-    if (user?.displayName) return user.displayName;
-    if (user?.email) return user.email.split('@')[0];
-    return 'User';
-  };
+    if (user?.displayName) return user.displayName
+    if (user?.email) return user.email.split('@')[0]
+    return 'User'
+  }
 
   const handleSignOut = async () => {
     try {
-      await signOut(auth);
-      router.push(ROUTES.HOME);
+      await signOut(auth)
+      router.push(ROUTES.HOME)
     } catch (error) {
-      console.error('Error signing out:', error);
+      console.error('Error signing out:', error)
     }
-  };
+  }
 
   if (loading) {
-    return <Skeleton className="h-10 w-10 rounded-full" />;
+    return <Skeleton className="h-10 w-10 rounded-full" />
   }
 
   if (!user) {
@@ -80,7 +80,7 @@ export function HeaderAuthActions() {
           </Button>
         </Link>
       </>
-    );
+    )
   }
 
   return (
@@ -88,7 +88,10 @@ export function HeaderAuthActions() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-10 w-10 rounded-full">
           <Avatar className="h-10 w-10">
-            <AvatarImage src={user.photoURL || undefined} alt={getDisplayName()} />
+            <AvatarImage
+              src={user.photoURL || undefined}
+              alt={getDisplayName()}
+            />
             <AvatarFallback className="bg-primary text-primary-foreground">
               {getUserInitials(user.email)}
             </AvatarFallback>
@@ -98,8 +101,10 @@ export function HeaderAuthActions() {
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">{getDisplayName()}</p>
-            <p className="text-xs leading-none text-muted-foreground">
+            <p className="text-sm leading-none font-medium">
+              {getDisplayName()}
+            </p>
+            <p className="text-muted-foreground text-xs leading-none">
               {user.email}
             </p>
           </div>
@@ -130,5 +135,5 @@ export function HeaderAuthActions() {
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  );
+  )
 }

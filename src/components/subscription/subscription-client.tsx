@@ -1,47 +1,47 @@
-'use client';
+'use client'
 
-import { useEffect, useMemo, useState } from 'react';
-import Link from 'next/link';
-import { Check } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react'
+import Link from 'next/link'
+import { Check } from 'lucide-react'
 
-import { useAuth } from '@/components/auth-provider';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { useAuth } from '@/components/auth-provider'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { cn } from '@/lib/utils';
-import { ROUTES } from '@/constants/routes';
+} from '@/components/ui/card'
+import { cn } from '@/lib/utils'
+import { ROUTES } from '@/constants/routes'
 
 export type Plan = {
-  id: 'free' | 'pro' | 'ultra';
-  name: string;
-  price: string;
-  description: string;
-  badge?: string | null;
-  features: string[];
-};
+  id: 'free' | 'pro' | 'ultra'
+  name: string
+  price: string
+  description: string
+  badge?: string | null
+  features: string[]
+}
 
 export function SubscriptionClient({ plans }: { plans: Plan[] }) {
-  const { user, loading } = useAuth();
-  const [selectedPlan, setSelectedPlan] = useState<Plan['id'] | null>(null);
-  const currentPlan = useMemo(() => selectedPlan, [selectedPlan]);
-  const canSelectPlan = !loading && !!user;
+  const { user, loading } = useAuth()
+  const [selectedPlan, setSelectedPlan] = useState<Plan['id'] | null>(null)
+  const currentPlan = useMemo(() => selectedPlan, [selectedPlan])
+  const canSelectPlan = !loading && !!user
 
   useEffect(() => {
     if (!loading && user && selectedPlan === null) {
-      setSelectedPlan('free');
+      setSelectedPlan('free')
     }
 
     if (!loading && !user) {
-      setSelectedPlan(null);
+      setSelectedPlan(null)
     }
-  }, [loading, user, selectedPlan]);
+  }, [loading, user, selectedPlan])
 
   return (
     <>
@@ -59,13 +59,13 @@ export function SubscriptionClient({ plans }: { plans: Plan[] }) {
 
       <div className="grid gap-6 md:grid-cols-3">
         {plans.map((plan) => {
-          const isCurrent = currentPlan === plan.id;
+          const isCurrent = currentPlan === plan.id
           return (
             <Card
               key={plan.id}
               className={cn(
                 'relative overflow-hidden',
-                isCurrent && 'border-primary shadow-sm'
+                isCurrent && 'border-primary shadow-sm',
               )}
             >
               <CardHeader className="space-y-3">
@@ -81,10 +81,10 @@ export function SubscriptionClient({ plans }: { plans: Plan[] }) {
                 </div>
               </CardHeader>
               <CardContent className="space-y-6">
-                <ul className="space-y-2 text-sm text-muted-foreground">
+                <ul className="text-muted-foreground space-y-2 text-sm">
                   {plan.features.map((feature) => (
                     <li key={feature} className="flex items-start gap-2">
-                      <Check className="mt-0.5 h-4 w-4 text-primary" />
+                      <Check className="text-primary mt-0.5 h-4 w-4" />
                       <span>{feature}</span>
                     </li>
                   ))}
@@ -100,9 +100,9 @@ export function SubscriptionClient({ plans }: { plans: Plan[] }) {
                 </Button>
               </CardContent>
             </Card>
-          );
+          )
         })}
       </div>
     </>
-  );
+  )
 }

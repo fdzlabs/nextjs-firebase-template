@@ -1,61 +1,62 @@
-'use client';
+'use client'
 
-import type React from 'react';
+import type React from 'react'
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth'
 
-import { auth, googleProvider } from '@/lib/firebase';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Separator } from '@/components/ui/separator';
-import { ROUTES } from '@/constants/routes';
+import { auth, googleProvider } from '@/lib/firebase'
+import { getErrorMessage } from '@/lib/firebase-error'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Separator } from '@/components/ui/separator'
+import { ROUTES } from '@/constants/routes'
 
 export function SignUpForm() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+  const router = useRouter()
 
   const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
+    e.preventDefault()
+    setError('')
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
-      return;
+      setError('Passwords do not match')
+      return
     }
 
-    setLoading(true);
+    setLoading(true)
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      router.push(ROUTES.DASHBOARD);
-    } catch (error: any) {
-      setError(error.message || 'Failed to create an account');
+      await createUserWithEmailAndPassword(auth, email, password)
+      router.push(ROUTES.DASHBOARD)
+    } catch (error: unknown) {
+      setError(getErrorMessage(error, 'Failed to create an account'))
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const handleGoogleSignUp = async () => {
-    setError('');
-    setLoading(true);
+    setError('')
+    setLoading(true)
 
     try {
-      await signInWithPopup(auth, googleProvider);
-      router.push(ROUTES.DASHBOARD);
-    } catch (error: any) {
-      setError(error.message || 'Failed to sign up with Google');
+      await signInWithPopup(auth, googleProvider)
+      router.push(ROUTES.DASHBOARD)
+    } catch (error: unknown) {
+      setError(getErrorMessage(error, 'Failed to sign up with Google'))
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <>
@@ -95,7 +96,7 @@ export function SignUpForm() {
       <div className="relative mb-4">
         <Separator />
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="bg-background px-2 text-xs text-muted-foreground">
+          <span className="bg-background text-muted-foreground px-2 text-xs">
             or
           </span>
         </div>
@@ -138,5 +139,5 @@ export function SignUpForm() {
         </Button>
       </form>
     </>
-  );
+  )
 }

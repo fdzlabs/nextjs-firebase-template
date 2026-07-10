@@ -1,15 +1,15 @@
-import Link from 'next/link';
-import { ROUTES } from '@/constants/routes';
+import Link from 'next/link'
+import { ROUTES } from '@/constants/routes'
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-background">
+    <footer className="border-border bg-background border-t">
       <div className="container mx-auto px-4 py-8">
         <div className="grid gap-8 md:grid-cols-3">
           {/* Brand */}
           <div className="space-y-3">
             <h3 className="text-sm font-semibold">Next.js Firebase Template</h3>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               A production-ready template combining Next.js, Firebase, and
               Terraform.
             </p>
@@ -86,14 +86,14 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 border-t border-border pt-8">
-          <p className="text-center text-sm text-muted-foreground">
+        <div className="border-border mt-8 border-t pt-8">
+          <p className="text-muted-foreground text-center text-sm">
             Built with Next.js and Firebase by{' '}
             <a
               href="https://fdzlabs.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-medium hover:text-foreground transition-colors"
+              className="hover:text-foreground font-medium transition-colors"
             >
               FDZ Labs
             </a>
@@ -102,5 +102,5 @@ export function Footer() {
         </div>
       </div>
     </footer>
-  );
+  )
 }

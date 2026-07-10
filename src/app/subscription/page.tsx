@@ -1,11 +1,11 @@
-import { Suspense } from 'react';
+import { Suspense } from 'react'
 
 import {
   SubscriptionClient,
   type Plan,
-} from '@/components/subscription/subscription-client';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
+} from '@/components/subscription/subscription-client'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Skeleton } from '@/components/ui/skeleton'
 
 const plans: Plan[] = [
   {
@@ -44,17 +44,17 @@ const plans: Plan[] = [
       'Priority support',
     ],
   },
-] as const;
+] as const
 
 export default function SubscriptionPage() {
   return (
     <main className="container mx-auto flex min-h-[calc(100vh-4rem)] flex-col gap-8 px-4 py-10">
       <div className="space-y-2">
-        <p className="text-sm text-muted-foreground">Subscription</p>
+        <p className="text-muted-foreground text-sm">Subscription</p>
         <h1 className="text-3xl font-semibold tracking-tight">
           Choose the ideal plan for you
         </h1>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-muted-foreground text-sm">
           This is a mock for now. No charges will be made.
         </p>
       </div>
@@ -62,7 +62,7 @@ export default function SubscriptionPage() {
         <SubscriptionClient plans={plans} />
       </Suspense>
     </main>
-  );
+  )
 }
 
 function SubscriptionSkeleton() {
@@ -94,5 +94,5 @@ function SubscriptionSkeleton() {
         </Card>
       ))}
     </div>
-  );
+  )
 }

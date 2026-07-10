@@ -1,5 +1,5 @@
-import Link from 'next/link';
-import Image from 'next/image';
+import Link from 'next/link'
+import Image from 'next/image'
 import {
   Card,
   CardContent,
@@ -7,9 +7,9 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { SignUpForm } from '@/components/auth/signup-form';
+} from '@/components/ui/card'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { SignUpForm } from '@/components/auth/signup-form'
 
 function isFirebaseConfigured() {
   return !!(
@@ -20,7 +20,7 @@ function isFirebaseConfigured() {
     process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID &&
     process.env.NEXT_PUBLIC_FIREBASE_APP_ID &&
     process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== 'demo-api-key'
-  );
+  )
 }
 
 export default function SignUp() {
@@ -29,7 +29,7 @@ export default function SignUp() {
       <div className="flex min-h-screen flex-col items-center justify-center p-4">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
-            <div className="flex justify-center mb-4">
+            <div className="mb-4 flex justify-center">
               <Image
                 src="/firebase-logo.png"
                 alt="Firebase Logo"
@@ -49,7 +49,7 @@ export default function SignUp() {
                 Please configure your Firebase environment variables to use
                 authentication.
                 <br />
-                <Link href="/setup" className="underline mt-2 inline-block">
+                <Link href="/setup" className="mt-2 inline-block underline">
                   View setup guide
                 </Link>
               </AlertDescription>
@@ -57,14 +57,14 @@ export default function SignUp() {
           </CardContent>
         </Card>
       </div>
-    );
+    )
   }
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <div className="flex justify-center mb-4">
+          <div className="mb-4 flex justify-center">
             <Image
               src="/firebase-logo.png"
               alt="Firebase Logo"
@@ -80,7 +80,7 @@ export default function SignUp() {
           <SignUpForm />
         </CardContent>
         <CardFooter className="flex justify-center">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             Already have an account?{' '}
             <Link href="/auth/signin" className="text-primary hover:underline">
               Sign in
@@ -89,5 +89,5 @@ export default function SignUp() {
         </CardFooter>
       </Card>
     </div>
-  );
+  )
 }
