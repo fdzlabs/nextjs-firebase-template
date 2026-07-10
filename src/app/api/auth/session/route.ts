@@ -6,18 +6,8 @@ import {
   isFirebaseAdminConfigured,
   SESSION_COOKIE_MAX_AGE_MS,
   SESSION_COOKIE_NAME,
+  sessionCookieOptions,
 } from '@/lib/firebase-admin'
-
-function sessionCookieOptions(maxAgeSeconds: number) {
-  return {
-    name: SESSION_COOKIE_NAME,
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax' as const,
-    path: '/',
-    maxAge: maxAgeSeconds,
-  }
-}
 
 /**
  * POST /api/auth/session

@@ -23,6 +23,18 @@ export const SESSION_COOKIE_NAME = '__session'
 /** Session cookie lifetime: 5 days (Firebase allows 5 minutes–14 days). */
 export const SESSION_COOKIE_MAX_AGE_MS = 60 * 60 * 24 * 5 * 1000
 
+/** Shared httpOnly cookie attributes for set/clear so path/attrs never drift. */
+export function sessionCookieOptions(maxAgeSeconds: number) {
+  return {
+    name: SESSION_COOKIE_NAME,
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax' as const,
+    path: '/',
+    maxAge: maxAgeSeconds,
+  }
+}
+
 function parseServiceAccountJson(raw: string): ServiceAccount {
   const parsed = JSON.parse(raw) as ServiceAccount & {
     project_id?: string

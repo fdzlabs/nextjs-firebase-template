@@ -6,6 +6,7 @@ import {
   getAdminAuth,
   isFirebaseAdminConfigured,
   SESSION_COOKIE_NAME,
+  sessionCookieOptions,
 } from '@/lib/firebase-admin'
 
 const PROTECTED_PREFIXES = [
@@ -27,13 +28,8 @@ function redirectToSignIn(request: NextRequest, clearCookie = false) {
 
   if (clearCookie) {
     response.cookies.set({
-      name: SESSION_COOKIE_NAME,
+      ...sessionCookieOptions(0),
       value: '',
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      path: '/',
-      maxAge: 0,
     })
   }
 
