@@ -44,7 +44,7 @@ const plans: Plan[] = [
       'Priority support',
     ],
   },
-] as const
+]
 
 export default function SubscriptionPage() {
   return (

@@ -28,7 +28,7 @@ git checkout -b feature/amazing-new-feature
 - **Style:** We use `eslint` and `prettier`. Run `pnpm format` to format, and `pnpm lint` before committing.
 - **Tests:** Unit tests use Vitest (`pnpm test`). Playwright smoke/e2e tests live under `e2e/` (`pnpm test:e2e`); they may need Firebase env (`.env.local`) for full auth flows.
 - **Components:** If adding new UI elements, try to stick to the [shadcn/ui](https://ui.shadcn.com/) patterns already established in `src/components/ui`.
-- **Commits:** Follow [Conventional Commits](https://www.conventionalcommits.org/). use types like `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`. Example: `feat(auth): add login page`.
+- **Commits:** Follow [Conventional Commits](https://www.conventionalcommits.org/). Use types like `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`. Example: `feat(auth): add login page`.
 
 ### 4. Push and Pull Request
 

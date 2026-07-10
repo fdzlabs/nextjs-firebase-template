@@ -59,5 +59,5 @@ googleProvider.setCustomParameters({
 })
 
 export { app, auth, db, storage, googleProvider }
-// export const isConfigured = missingVars.length === 0
-export const isConfigured = missingVars.length < 10
+export const isConfigured =
+  missingVars.length === 0 && apiKey !== 'demo-api-key'

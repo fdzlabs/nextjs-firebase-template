@@ -106,7 +106,7 @@ Each stage creates isolated infrastructure. Here is what happens when you create
 
 ### 1. Google Cloud Platform (GCP) & Firebase
 
-**Strategy:** Each details stage (workspace) creates a _completely separate_ GCP Project.
+**Strategy:** Each stage (workspace) creates a _completely separate_ GCP Project.
 
 - **Project Isolation:**
   - **Prod:** `my-app-prod` (Project ID)

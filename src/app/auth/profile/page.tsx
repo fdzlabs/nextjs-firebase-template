@@ -10,7 +10,7 @@ import {
   verifyBeforeUpdateEmail,
 } from 'firebase/auth'
 import { auth } from '@/lib/firebase'
-import { getErrorMessage, isFirebaseError } from '@/lib/firebase-error'
+import { getErrorMessage } from '@/lib/firebase-error'
 import { useAuth } from '@/components/auth-provider'
 import { Header } from '@/components/header'
 import { Button } from '@/components/ui/button'
@@ -87,11 +87,15 @@ export default function ProfilePage() {
     e.preventDefault()
     setError('')
     setMessage('')
+
+    if (!user) {
+      setError('No user logged in')
+      return
+    }
+
     setLoading(true)
 
     try {
-      if (!user) throw new Error('No user logged in')
-
       await updateProfile(user, {
         displayName: displayName,
       })
@@ -109,22 +113,30 @@ export default function ProfilePage() {
     setError('')
     setMessage('')
     setEmailVerificationSent(false)
+
+    if (!user) {
+      setError('No user logged in')
+      return
+    }
+    if (!currentEmailPassword) {
+      setError('Current password is required')
+      return
+    }
+    if (!user.email) {
+      setError('Account has no email address')
+      return
+    }
+    if (email === user.email) {
+      setError('New email must be different from current email')
+      return
+    }
+
     setLoading(true)
 
     try {
-      if (!user) throw new Error('No user logged in')
-      if (!currentEmailPassword) {
-        throw new Error('Current password is required')
-      }
-
-      // Validate new email is different
-      if (email === user.email) {
-        throw new Error('New email must be different from current email')
-      }
-
       // Reauthenticate user before updating email
       const credential = EmailAuthProvider.credential(
-        user.email!,
+        user.email,
         currentEmailPassword,
       )
       await reauthenticateWithCredential(user, credential)
@@ -140,28 +152,7 @@ export default function ProfilePage() {
       )
       setCurrentEmailPassword('')
     } catch (error: unknown) {
-      if (isFirebaseError(error)) {
-        switch (error.code) {
-          case 'auth/requires-recent-login':
-            setError('Please sign in again to update your email')
-            break
-          case 'auth/email-already-in-use':
-            setError('This email is already in use by another account')
-            break
-          case 'auth/invalid-email':
-            setError('Please enter a valid email address')
-            break
-          case 'auth/wrong-password':
-            setError('Current password is incorrect')
-            break
-          default:
-            setError(
-              getErrorMessage(error, 'Failed to send verification email'),
-            )
-        }
-      } else {
-        setError(getErrorMessage(error, 'Failed to send verification email'))
-      }
+      setError(getErrorMessage(error, 'Failed to send verification email'))
     } finally {
       setLoading(false)
     }
@@ -182,15 +173,25 @@ export default function ProfilePage() {
       return
     }
 
+    if (!user) {
+      setError('No user logged in')
+      return
+    }
+    if (!currentPassword) {
+      setError('Current password is required')
+      return
+    }
+    if (!user.email) {
+      setError('Account has no email address')
+      return
+    }
+
     setLoading(true)
 
     try {
-      if (!user) throw new Error('No user logged in')
-      if (!currentPassword) throw new Error('Current password is required')
-
       // Reauthenticate user before updating password
       const credential = EmailAuthProvider.credential(
-        user.email!,
+        user.email,
         currentPassword,
       )
       await reauthenticateWithCredential(user, credential)
@@ -202,23 +203,7 @@ export default function ProfilePage() {
       setNewPassword('')
       setConfirmPassword('')
     } catch (error: unknown) {
-      if (isFirebaseError(error)) {
-        switch (error.code) {
-          case 'auth/requires-recent-login':
-            setError('Please sign in again to update your password')
-            break
-          case 'auth/wrong-password':
-            setError('Current password is incorrect')
-            break
-          case 'auth/weak-password':
-            setError('Password is too weak. Please use a stronger password')
-            break
-          default:
-            setError(getErrorMessage(error, 'Failed to update password'))
-        }
-      } else {
-        setError(getErrorMessage(error, 'Failed to update password'))
-      }
+      setError(getErrorMessage(error, 'Failed to update password'))
     } finally {
       setLoading(false)
     }

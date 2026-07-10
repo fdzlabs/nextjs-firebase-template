@@ -18,7 +18,7 @@ This document outlines the plan for creating the Next.js + Firebase Template inf
   - Provisions Firebase Project, Auth, Firestore, and Storage.
   - **Note**: often requires Billing Account for API enablement.
 - **Manual Path (Free Tier/Console)**:
-  - Documentation guid on how to set up resources manually in Firebase Console.
+  - Documentation guide on how to set up resources manually in Firebase Console.
   - Instructions on where to find config values.
 
 ### Services

@@ -59,7 +59,6 @@ region          = "us-central1"
 billing_account = "000000-000000-000000"    # Required for automated project creation
 ```
 
-````
 > **Important**: `project_id` must be:
 > 1.  **Globally unique** across all Google Cloud customers.
 > 2.  **At most 30 characters long**.
@@ -83,7 +82,7 @@ To enable Google Sign-In, you need to provide OAuth credentials.
 ```hcl
 google_client_id     = "YOUR_CLIENT_ID"
 google_client_secret = "YOUR_CLIENT_SECRET"
-````
+```
 
 If these are omitted, Google Sign-In will simply be disabled.
 

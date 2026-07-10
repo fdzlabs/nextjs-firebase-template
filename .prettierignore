@@ -17,3 +17,4 @@ blob-report
 infra/.terraform
 *.min.js
 *.min.css
+.agents

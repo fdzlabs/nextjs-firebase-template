@@ -1,5 +1,21 @@
 import { expect, test } from '@playwright/test'
 
+const REQUIRED_FIREBASE_ENV = [
+  'NEXT_PUBLIC_FIREBASE_API_KEY',
+  'NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN',
+  'NEXT_PUBLIC_FIREBASE_PROJECT_ID',
+  'NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET',
+  'NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID',
+  'NEXT_PUBLIC_FIREBASE_APP_ID',
+] as const
+
+function hasFirebaseEnv(): boolean {
+  return REQUIRED_FIREBASE_ENV.every((key) => {
+    const value = process.env[key]
+    return Boolean(value) && value !== 'demo-api-key'
+  })
+}
+
 /**
  * Auth smoke tests.
  *
@@ -28,9 +44,8 @@ test.describe('auth smoke', () => {
     page,
   }) => {
     test.skip(
-      !process.env.NEXT_PUBLIC_FIREBASE_API_KEY ||
-        process.env.NEXT_PUBLIC_FIREBASE_API_KEY === 'demo-api-key',
-      'Requires Firebase env (e.g. pnpm sync-env / .env.local)',
+      !hasFirebaseEnv(),
+      'Requires full Firebase env (e.g. pnpm sync-env / .env.local)',
     )
 
     await page.goto('/dashboard')
