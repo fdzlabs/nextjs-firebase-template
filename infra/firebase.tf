@@ -124,6 +124,8 @@ resource "google_firestore_database" "default" {
   type                        = "FIRESTORE_NATIVE"
   concurrency_mode            = "OPTIMISTIC"
   app_engine_integration_mode = "DISABLED"
+  # Provider 6.x defaults to ABANDON; DELETE keeps template teardown working.
+  deletion_policy             = "DELETE"
 
   depends_on = [google_project_service.firestore]
 }
