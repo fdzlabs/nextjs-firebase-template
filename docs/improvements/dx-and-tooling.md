@@ -26,9 +26,16 @@ The current setup lacks standard code formatting and testing infrastructure, des
 
 ## Acceptance Criteria
 
+<<<<<<< Updated upstream
 - [x] `pnpm format` successfully runs Prettier on the codebase.
 - [x] Playwright or Vitest is installed and can run successfully via `pnpm test`.
 - [x] Node v20+ requirement is enforced via `.nvmrc` and `package.json`.
 - [x] Duplicate toast hooks are merged into a single implementation.
 
 > Implemented on branch `chore/dx-and-tooling` (Vitest as `pnpm test`, Playwright as `pnpm test:e2e`).
+=======
+- [ ] `pnpm format` successfully runs Prettier on the codebase.
+- [ ] Playwright or Vitest is installed and can run successfully via `pnpm test`.
+- [ ] Node v20+ requirement is enforced via `.nvmrc` and `package.json`.
+- [ ] Duplicate toast hooks are merged into a single implementation.
+>>>>>>> Stashed changes

@@ -121,7 +121,11 @@ Full steps and the exact env vars are in the [Manual Setup Guide](docs/setup-man
 - **Manual (Console):** [Manual Setup Guide](docs/setup-manual.md).
 - **Vercel + Git:** [Vercel Integration](docs/vercel-integration.md).
 - **Multiple environments:** [Managing Stages](docs/stages.md).
+<<<<<<< Updated upstream
 - **Security rules:** [Firestore & Storage rules](docs/security-rules.md).
+=======
+- **Improvements:** [Modernization Backlog](docs/improvements/README.md)
+>>>>>>> Stashed changes
 
 ## Project structure
 

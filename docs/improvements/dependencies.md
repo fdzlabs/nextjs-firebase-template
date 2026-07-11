@@ -2,6 +2,7 @@
 
 While the core frameworks (Next.js, React, Firebase, Tailwind) are up to date, several secondary packages and UI components should be evaluated for updates. Do not upgrade blindly; review changelogs for breaking changes.
 
+<<<<<<< Updated upstream
 ## Status (2026-07-10)
 
 | Package | Decision | Notes |
@@ -20,4 +21,40 @@ While the core frameworks (Next.js, React, Firebase, Tailwind) are up to date, s
 - [x] Run `pnpm outdated` to verify current versions.
 - [x] Update target dependencies in `package.json` and regenerate `pnpm-lock.yaml`.
 - [x] Run `pnpm build` and `pnpm lint` to ensure no new errors are introduced.
+=======
+## Upgrade Candidates
+
+1. **shadcn/ui & Radix UI**
+   - **Current:** Exact pins from ~Dec 2024.
+   - **Target:** Latest components.
+   - **Action:** Re-run the shadcn CLI to refresh components in `src/components/ui/`.
+
+2. **lucide-react**
+   - **Current:** `^0.454.0`
+   - **Target:** Latest `0.5xx+` or newer.
+   - **Action:** Bump in `package.json`.
+
+3. **@vercel/analytics**
+   - **Current:** `1.3.1`
+   - **Target:** Latest 1.x version.
+
+4. **zod**
+   - **Current:** `3.25.76`
+   - **Target:** Evaluate migration to Zod 4.x (if adopted project-wide and stable).
+
+5. **recharts**
+   - **Current:** `2.15.4`
+   - **Target:** Evaluate migration to Recharts 3.x.
+
+6. **Terraform Google Provider**
+   - **Current:** `~> 5.0` (in `infra/`)
+   - **Target:** `~> 6.0`
+   - **Action:** Upgrade when next modifying infrastructure configuration.
+
+## Acceptance Criteria
+
+- [ ] Run `pnpm outdated` to verify current versions.
+- [ ] Update target dependencies in `package.json` and regenerate `pnpm-lock.yaml`.
+- [ ] Run `pnpm build` and `pnpm lint` to ensure no new errors are introduced.
+>>>>>>> Stashed changes
 - [ ] Smoke test the authentication flows (sign up, sign in, sign out) to verify stability.
