@@ -20,6 +20,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { ROUTES } from '@/constants/routes'
 import { auth } from '@/lib/firebase'
 import { isConfigured } from '@/lib/firebase-env'
+import { clearSessionCookie } from '@/lib/session-client'
 
 export function HeaderAuthActions() {
   const { user, loading } = useAuth()
@@ -38,6 +39,9 @@ export function HeaderAuthActions() {
 
   const handleSignOut = async () => {
     try {
+      await clearSessionCookie().catch((error) => {
+        console.error('Failed to clear session cookie:', error)
+      })
       await signOut(auth)
       router.push(ROUTES.HOME)
     } catch (error) {

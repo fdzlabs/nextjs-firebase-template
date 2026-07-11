@@ -7,6 +7,11 @@ import { useAuth } from './auth-provider'
 import { isConfigured } from '@/lib/firebase-env'
 import { ROUTES } from '@/constants/routes'
 
+/**
+ * Soft UX fallback while the Next.js proxy (`src/proxy.ts`) is the primary
+ * auth gate. Shows a loading skeleton until client auth resolves, and redirects
+ * only when Firebase client reports no user (e.g. local/dev without Admin).
+ */
 export default function ProtectedRoute({
   children,
   skeleton,
